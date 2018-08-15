@@ -15,15 +15,19 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 public class DiaEntryDatabase extends SQLiteOpenHelper{
     public static DiaEntryDatabase INSTANCE = null;
 
+    // ToDo: Version ändern, wenn neue Column hinzugefügt wurde
     private static final String DB_NAME = "DIARYENTRIES";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
     private static final String TABLE_NAME = "diaryentries";
 
     public static final String ID_COL = "ID";
     public static final String NAME_COL = "name";
     public static final String DATE_COL = "date";
+    public static final String MOOD_COL = "mood";
+    // ToDo: neue Column hier nennen
 
-    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL};
+    // Todo: neue Col hier hinzufügen
+    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL};
 
     private DiaEntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -37,10 +41,10 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         return INSTANCE;
     }
 
-    // ToDo: neue Columns hier hinzufügen
+    // ToDo: neue Columns/Felder hier hinzufügen
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY, " +  NAME_COL + " TEXT NOT NULL, " + DATE_COL + " INTEGER DEFAULT NULL)";
+        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY, " +  NAME_COL + " TEXT NOT NULL, " + DATE_COL + " INTEGER DEFAULT NULL, " + MOOD_COL + " INTEGER DEFAULT NULL)";
 
         db.execSQL(createQuery);
     }
@@ -53,13 +57,14 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    // ToDo: value der neuen Columns hier hinzufügen
+    // ToDo: mit value.put den Wert der neuen Columns hier hinzufügen
     public DiaEntry createEntry(final DiaEntry diaEntry){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(NAME_COL, diaEntry.getName());
         values.put(DATE_COL, diaEntry.getDate() == null ? null : diaEntry.getDate().getTimeInMillis() / 1000);
+        values.put(MOOD_COL, diaEntry.getMood());
 
         long newId = db.insert(TABLE_NAME, null, values);
 
@@ -85,10 +90,11 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
             if (!cursor.isNull(cursor.getColumnIndex(DATE_COL))) {
                 calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(cursor.getInt(cursor.getColumnIndex(DATE_COL)) * 1000);
+                calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DATE_COL)) * 1000);
             }
 
             diaEntry.setDate(calendar);
+            diaEntry.setMood(cursor.getInt(cursor.getColumnIndex(MOOD_COL)));
         }
 
         db.close();
@@ -123,6 +129,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
         contentValues.put(NAME_COL, diaEntry.getName());
         contentValues.put(DATE_COL, diaEntry.getDate() == null ? null : diaEntry.getDate().getTimeInMillis() / 1000);
+        contentValues.put(MOOD_COL, diaEntry.getMood());
 
         db.update(TABLE_NAME, contentValues, ID_COL + " = ?", new String[]{String.valueOf(diaEntry.getId())});
 
@@ -145,19 +152,5 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         db.execSQL("DELETE FROM " + TABLE_NAME);
 
         db.close();
-    }
-
-    public Cursor getAllDiaEntriesAsCursor(){
-        return this.getReadableDatabase().rawQuery("SELECT " + ID_COL + " as _id, " + NAME_COL + " , " + DATE_COL + " FROM " + TABLE_NAME, null);
-    }
-
-    public DiaEntry getFirstDiaEntry() {
-        List<DiaEntry> diaEntries = this.readAllDiaEntries();
-
-        if (diaEntries.size() > 0) {
-            return diaEntries.get(0);
-        }
-
-        return null;
     }
 }

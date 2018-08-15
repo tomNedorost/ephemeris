@@ -1,12 +1,16 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 import rgbg.ss18.android.ephemeris.adapter.DiaEntryOverviewListAdapter;
@@ -15,8 +19,9 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button createBtn, clearAllBtn, clearFirstBtn,updateFirstBtn;
+    private Button createBtn, clearAllBtn, clearFirstBtn, updateFirstBtn;
     private ListView diaListView;
+    private List<DiaEntry> dataSource;
     private DiaEntryOverviewListAdapter adapter;
 
     @Override
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Testing
                     db.createEntry(new DiaEntry("test"));
-                    db.createEntry(new DiaEntry("test2", Calendar.getInstance()));
+                    db.createEntry(new DiaEntry("test2", Calendar.getInstance(), 2));
 
                     refreshListView();
                 }
@@ -69,12 +74,9 @@ public class MainActivity extends AppCompatActivity {
             clearFirstBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
-                    DiaEntry first = db.getFirstDiaEntry();
-
-                    if (first != null) {
-                        db.deleteDiaEntry(first);
-
+                    if (dataSource.size() > 0 ) {
+                        DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
+                        db.deleteDiaEntry(dataSource.get(0));
                         refreshListView();
                     }
                 }
@@ -85,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
             updateFirstBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
-                    DiaEntry first = db.getFirstDiaEntry();
-                    if (first != null) {
+
+                    if (dataSource.size() > 0) {
+                        DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
                         Random r = new Random();
-                        first.setName(String.valueOf(r.nextInt()));
-                        db.updateDiaEntry(first);
+                        dataSource.get(0).setName(String.valueOf(r.nextInt()));
+                        db.updateDiaEntry(dataSource.get(0));
 
                         refreshListView();
                     }
@@ -101,13 +103,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListView() {
         this.diaListView = findViewById(R.id.diaListView);
-        this.adapter = new DiaEntryOverviewListAdapter(this, DiaEntryDatabase.getInstance(this).getAllDiaEntriesAsCursor());
+        this.dataSource = DiaEntryDatabase.getInstance(this).readAllDiaEntries();
+        this.adapter = new DiaEntryOverviewListAdapter(this, dataSource);
         diaListView.setAdapter(adapter);
 
+        // ToDo: zur edit activity weiterleiten
+        this.diaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object element = parent.getAdapter().getItem(position);
+
+                if (element instanceof DiaEntry) {
+                    DiaEntry diaEntry = (DiaEntry) element;
+
+                    Intent intent = new Intent(MainActivity.this, DiaEntryDetailActivity.class);
+                    intent.putExtra(DiaEntryDetailActivity.TODO_KEY, diaEntry);
+
+                    startActivity(intent);
+                }
+
+                Log.e("ClickOnList", element.toString());
+            }
+        });
     }
 
 
     public void refreshListView() {
-        adapter.changeCursor(DiaEntryDatabase.getInstance(this).getAllDiaEntriesAsCursor());
+        dataSource.clear();
+        dataSource.addAll(DiaEntryDatabase.getInstance(this).readAllDiaEntries());
+        adapter.notifyDataSetChanged();
     }
 }
