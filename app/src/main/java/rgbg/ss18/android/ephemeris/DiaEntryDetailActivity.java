@@ -19,8 +19,6 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
 
         Log.e("ID ", String.valueOf(diaEntry.getId()));
         Log.e("Name ", diaEntry.getName());
-        Log.e("Mood ",
-
-                String.valueOf(diaEntry.getMood()));
+        Log.e("Mood ", String.valueOf(diaEntry.getMood()));
     }
 }

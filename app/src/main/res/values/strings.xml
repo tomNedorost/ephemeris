@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ephemeris</string>
+
+    <string name="dia_entry_detail_title">Title</string>
+
+    <string name="dia_entry_detail_testTag1">Test-Tag1</string>
+    <string name="dia_entry_detail_testTag2">Test-Tag2</string>
+
+    <string name="dia_entry_detail_moodDescription">Mood-Indicator</string>
+    <string name="dia_entry_detail_entryImageDescription">EntryImage</string>
 </resources>
