@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         initButtons();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshListView();
+    }
+
     private void initButtons() {
         createBtn = findViewById(R.id.createBtn);
         clearAllBtn = findViewById(R.id.clearAllBtn);
@@ -47,11 +53,8 @@ public class MainActivity extends AppCompatActivity {
             createBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
-
-                    // Testing
-                    db.createEntry(new DiaEntry("test"));
-                    db.createEntry(new DiaEntry("test2", Calendar.getInstance(), 2));
+                    Intent intent = new Intent(MainActivity.this, DiaEntryCreateActivity.class);
+                    startActivity(intent);
 
                     refreshListView();
                 }

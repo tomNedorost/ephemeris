@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DiaEntryDetailActivity"></activity>
+        <activity android:name=".DiaEntryDetailActivity" />
+        <activity android:name=".DiaEntryCreateActivity"></activity>
     </application>
 
 </manifest>

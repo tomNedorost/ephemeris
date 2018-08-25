@@ -8,4 +8,6 @@
 
     <string name="dia_entry_detail_moodDescription">Mood-Indicator</string>
     <string name="dia_entry_detail_entryImageDescription">EntryImage</string>
+    <string name="diaEntryTitleEditTextHint">Gib den Titel deines Eintrages ein!</string>
+    <string name="diaEntryDescEditTextHint">Was ist heute so passiert?</string>
 </resources>
