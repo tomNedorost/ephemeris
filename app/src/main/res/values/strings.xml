@@ -10,4 +10,5 @@
     <string name="dia_entry_detail_entryImageDescription">EntryImage</string>
     <string name="diaEntryTitleEditTextHint">Gib den Titel deines Eintrages ein!</string>
     <string name="diaEntryDescEditTextHint">Was ist heute so passiert?</string>
+    <string name="selectImgBtnTxt">Wähle ein Bild aus.</string>
 </resources>

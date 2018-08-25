@@ -17,7 +17,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
     // ToDo: Version ändern, wenn neue Column hinzugefügt wurde
     private static final String DB_NAME = "DIARYENTRIES";
-    private static final int VERSION = 3;
+    private static final int VERSION = 5;
     private static final String TABLE_NAME = "diaryentries";
 
     public static final String ID_COL = "ID";
@@ -25,10 +25,11 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
     public static final String DATE_COL = "date";
     public static final String MOOD_COL = "mood";
     public static final String DESC_COL = "description";
+    public static final String IMG_URI_COL = "uri";
     // ToDo: neue Column hier nennen
 
     // Todo: neue Col hier hinzufügen
-    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL};
+    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL, IMG_URI_COL};
 
     private DiaEntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -45,7 +46,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
     // ToDo: neue Columns/Felder hier hinzufügen
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY, " +  NAME_COL + " TEXT NOT NULL, " + DATE_COL + " INTEGER DEFAULT NULL, " + MOOD_COL + " INTEGER DEFAULT NULL, " + DESC_COL + " TEXT)";
+        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY, " +  NAME_COL + " TEXT NOT NULL, " + DATE_COL + " INTEGER DEFAULT NULL, " + MOOD_COL + " INTEGER DEFAULT NULL, " + DESC_COL + " TEXT," + IMG_URI_COL + " Text)";
 
         db.execSQL(createQuery);
     }
@@ -68,6 +69,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         values.put(DATE_COL, diaEntry.getDate() == null ? null : diaEntry.getDate().getTimeInMillis() / 1000);
         values.put(MOOD_COL, diaEntry.getMood());
         values.put(DESC_COL, diaEntry.getDescription());
+        values.put(IMG_URI_COL, diaEntry.getUriString());
 
         long newId = db.insert(TABLE_NAME, null, values);
 
@@ -100,6 +102,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
             diaEntry.setDate(calendar);
             diaEntry.setMood(cursor.getInt(cursor.getColumnIndex(MOOD_COL)));
             diaEntry.setDescription(cursor.getString(cursor.getColumnIndex(DESC_COL)));
+            diaEntry.setUriString(cursor.getString(cursor.getColumnIndex(IMG_URI_COL)));
         }
 
         db.close();
@@ -138,6 +141,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         contentValues.put(DATE_COL, diaEntry.getDate() == null ? null : diaEntry.getDate().getTimeInMillis() / 1000);
         contentValues.put(MOOD_COL, diaEntry.getMood());
         contentValues.put(DESC_COL, diaEntry.getDescription());
+        contentValues.put(IMG_URI_COL, diaEntry.getUriString());
 
         db.update(TABLE_NAME, contentValues, ID_COL + " = ?", new String[]{String.valueOf(diaEntry.getId())});
 

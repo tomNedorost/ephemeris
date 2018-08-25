@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         initButtons();
     }
 
+    // refresht die ListView immer wenn diese Activity angezeigt wird
     @Override
     protected void onResume() {
         super.onResume();
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         this.adapter = new DiaEntryOverviewListAdapter(this, dataSource);
         diaListView.setAdapter(adapter);
 
-        // ToDo: zur edit activity weiterleiten
+        // ToDo: zur edit activity weiterleiten, dies funtkioniert ähnlich wie die createEntry Methode, nur mit der updateEntry Methode
         this.diaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -124,8 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
                     startActivity(intent);
                 }
-
-                Log.e("ClickOnList", element.toString());
             }
         });
     }

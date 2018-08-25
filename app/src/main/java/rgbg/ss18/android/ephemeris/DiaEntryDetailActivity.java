@@ -1,8 +1,10 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -19,6 +21,7 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
 
     // Hier alle Variablen des activity layouts, diese werden in initLayout beschrieben
     private TextView title, timeStamp, entryText;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         Log.e("Name ", diaEntry.getName());
         Log.e("Mood ", String.valueOf(diaEntry.getMood()));
         Log.e("Description", diaEntry.getDescription());
+        Log.e("URI", diaEntry.getUriString());
     }
 
     private void initDiaEntry() {
@@ -44,9 +48,11 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         title = findViewById(R.id.textView_title);
         timeStamp = findViewById(R.id.textView_timestamp);
         entryText = findViewById(R.id.textView_entryText);
+        imageView = findViewById(R.id.imageView_entryImage);
 
         title.setText(diaEntry.getName());
 
+        // wenn der Entry eine Description hat, sollte auf Grund der Konstruktoren nicht möglich sein, aber sicher ist sicher :)
         if (diaEntry.getDescription() != null) {
             entryText.setText(diaEntry.getDescription());
         }
@@ -55,6 +61,10 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         if (diaEntry.getDate() != null) {
             timeStamp.setText(String.valueOf(diaEntry.getDate().getTime()));
         }
+
+        // Todo: lädt Bild nicht, herausfinden, warum
+        Uri uri = Uri.parse(diaEntry.getUriString());
+        imageView.setImageURI(uri);
 
     }
 }
