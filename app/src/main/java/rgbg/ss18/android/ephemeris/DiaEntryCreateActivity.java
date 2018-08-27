@@ -69,6 +69,7 @@ public class DiaEntryCreateActivity extends AppCompatActivity {
                 // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt. Wenn du noch weitere Konstruktoren brauchst, gib Bescheid
                 DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
 
+                // fügt das bild zum DiaEntry als byte[] hinzu.
                 try {
                     byte[] image = imageViewToByte(imageView);
                     newDiaEntry.setImage(image);

@@ -44,6 +44,8 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
     }
 
     private void initDiaEntry() {
+        // erhält aus dem intent den diaentry, der nur aus einer ID und einem Namen besteht und sucht sich danach mittels der ID den passenden aus der DB.
+        // Grund dafür: würden wir alle DiaEntries in der Liste anzeigen, und dort die Bilder auch mit reinladen, würde aufgrund der größe und menge die App abstürzen
         diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
         dbDiaEntry = DiaEntryDatabase.getInstance(this).readDiaEntry(diaEntry.getId());
     }
@@ -69,7 +71,7 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
             timeStamp.setText(String.valueOf(dbDiaEntry.getDate().get(Calendar.YEAR)));
         }
 
-        // Todo: lädt Bild nicht, herausfinden, warum
+        // lädt Bild, falls vorhanden in die imageview um, sonst platzhalterbild
         if (dbDiaEntry.getImage() != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(dbDiaEntry.getImage(), 0, dbDiaEntry.getImage().length);
             imageView.setImageBitmap(bitmap);
