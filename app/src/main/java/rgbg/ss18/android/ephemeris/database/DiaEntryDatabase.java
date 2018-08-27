@@ -5,11 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import rgbg.ss18.android.ephemeris.MainActivity;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class DiaEntryDatabase extends SQLiteOpenHelper{
@@ -17,19 +20,18 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
     // ToDo: Version ändern, wenn neue Column hinzugefügt wurde
     private static final String DB_NAME = "DIARYENTRIES";
-    private static final int VERSION = 5;
+    private static final int VERSION = 15;
     private static final String TABLE_NAME = "diaryentries";
-
     public static final String ID_COL = "ID";
     public static final String NAME_COL = "name";
     public static final String DATE_COL = "date";
     public static final String MOOD_COL = "mood";
     public static final String DESC_COL = "description";
-    public static final String IMG_URI_COL = "uri";
+    public static final String IMG_COL = "image";
     // ToDo: neue Column hier nennen
 
     // Todo: neue Col hier hinzufügen
-    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL, IMG_URI_COL};
+    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL, IMG_COL};
 
     private DiaEntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -39,14 +41,19 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         if (INSTANCE == null) {
             INSTANCE = new DiaEntryDatabase(context);
         }
-
         return INSTANCE;
     }
 
     // ToDo: neue Columns/Felder hier hinzufügen
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY, " +  NAME_COL + " TEXT NOT NULL, " + DATE_COL + " INTEGER DEFAULT NULL, " + MOOD_COL + " INTEGER DEFAULT NULL, " + DESC_COL + " TEXT," + IMG_URI_COL + " Text)";
+        String createQuery = "CREATE TABLE " + TABLE_NAME + " ("
+                + ID_COL + " INTEGER PRIMARY KEY, "
+                + NAME_COL + " TEXT NOT NULL, "
+                + DATE_COL + " INTEGER DEFAULT NULL, "
+                + MOOD_COL + " INTEGER DEFAULT NULL, "
+                + DESC_COL + " TEXT,"
+                + IMG_COL + " BLOB);";
 
         db.execSQL(createQuery);
     }
@@ -61,7 +68,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
     // ToDo: mit value.put den Wert der neuen Columns hier hinzufügen
     // Erstellt einen neuen DiaEntry in der DB mit Hilfe eines DiaEntries
-    public DiaEntry createEntry(final DiaEntry diaEntry){
+    public boolean createEntry(final DiaEntry diaEntry){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -69,13 +76,17 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         values.put(DATE_COL, diaEntry.getDate() == null ? null : diaEntry.getDate().getTimeInMillis() / 1000);
         values.put(MOOD_COL, diaEntry.getMood());
         values.put(DESC_COL, diaEntry.getDescription());
-        values.put(IMG_URI_COL, diaEntry.getUriString());
+        values.put(IMG_COL, diaEntry.getImage());
 
         long newId = db.insert(TABLE_NAME, null, values);
 
         db.close();
 
-        return readDiaEntry(newId);
+        if (newId == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // ToDo: diaEntry richtig mit allen Cols beschreiben
@@ -91,6 +102,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
             cursor.moveToFirst();
             diaEntry = new DiaEntry(cursor.getString(cursor.getColumnIndex(NAME_COL)));
             diaEntry.setId(cursor.getLong(cursor.getColumnIndex(ID_COL)));
+            diaEntry.setDescription(cursor.getString(cursor.getColumnIndex(DESC_COL)));
 
             Calendar calendar = null;
 
@@ -101,24 +113,27 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
             diaEntry.setDate(calendar);
             diaEntry.setMood(cursor.getInt(cursor.getColumnIndex(MOOD_COL)));
-            diaEntry.setDescription(cursor.getString(cursor.getColumnIndex(DESC_COL)));
-            diaEntry.setUriString(cursor.getString(cursor.getColumnIndex(IMG_URI_COL)));
+            if (cursor.getBlob(cursor.getColumnIndex(IMG_COL)) != null) {
+                diaEntry.setImage(cursor.getBlob(cursor.getColumnIndex(IMG_COL)));
+            }
+
         }
 
         db.close();
         return diaEntry;
     }
 
-    // Gibt eine Liste mit allen DiaEntries zurück.
+    // Gibt eine Liste mit allen DiaEntries Namen und Datum zurück.
     public List<DiaEntry> readAllDiaEntries() {
         List<DiaEntry> diaEntries = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " +  TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT " + ID_COL + "," + NAME_COL + " FROM " +  TABLE_NAME, null);
 
         if (cursor.moveToFirst()) {
             do{
-                DiaEntry diaEntry = readDiaEntry(cursor.getLong(cursor.getColumnIndex(ID_COL)));
+                DiaEntry diaEntry = new DiaEntry(cursor.getString(cursor.getColumnIndex(NAME_COL)));
+                diaEntry.setId(cursor.getLong(cursor.getColumnIndex(ID_COL)));
                 if (diaEntry != null) {
                     diaEntries.add(diaEntry);
                 }
@@ -141,7 +156,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         contentValues.put(DATE_COL, diaEntry.getDate() == null ? null : diaEntry.getDate().getTimeInMillis() / 1000);
         contentValues.put(MOOD_COL, diaEntry.getMood());
         contentValues.put(DESC_COL, diaEntry.getDescription());
-        contentValues.put(IMG_URI_COL, diaEntry.getUriString());
+        contentValues.put(IMG_COL, diaEntry.getImage());
 
         db.update(TABLE_NAME, contentValues, ID_COL + " = ?", new String[]{String.valueOf(diaEntry.getId())});
 

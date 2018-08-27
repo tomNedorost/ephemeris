@@ -1,5 +1,7 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class DiaEntryDetailActivity extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
 
     // Neue Instanz, diese wird in initDiaEntry() aus den Extras gezogen.
     private DiaEntry diaEntry;
+    private DiaEntry dbDiaEntry;
 
     // Hier alle Variablen des activity layouts, diese werden in initLayout beschrieben
     private TextView title, timeStamp, entryText;
@@ -33,12 +37,15 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         Log.e("ID ", String.valueOf(diaEntry.getId()));
         Log.e("Name ", diaEntry.getName());
         Log.e("Mood ", String.valueOf(diaEntry.getMood()));
-        Log.e("Description", diaEntry.getDescription());
-        Log.e("URI", diaEntry.getUriString());
+        if (diaEntry.getDescription() != null) {
+            Log.e("Description", diaEntry.getDescription());
+        }
+
     }
 
     private void initDiaEntry() {
         diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
+        dbDiaEntry = DiaEntryDatabase.getInstance(this).readDiaEntry(diaEntry.getId());
     }
 
     // zuerst die oben erstellten Variablen beschreiben, dann den Text entsprechend anpassen
@@ -50,21 +57,22 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         entryText = findViewById(R.id.textView_entryText);
         imageView = findViewById(R.id.imageView_entryImage);
 
-        title.setText(diaEntry.getName());
+        title.setText(dbDiaEntry.getName());
 
-        // wenn der Entry eine Description hat, sollte auf Grund der Konstruktoren nicht möglich sein, aber sicher ist sicher :)
-        if (diaEntry.getDescription() != null) {
+        // wenn der Entry keine Description hat, sollte auf Grund der Konstruktoren nicht möglich sein, aber sicher ist sicher :)
+        if (dbDiaEntry.getDescription() != null) {
             entryText.setText(diaEntry.getDescription());
         }
         // wenn der Entry nen Datum eingestellt hat, dann diesen beschreiben.
         // Darstellung eventuell anpassen.
-        if (diaEntry.getDate() != null) {
-            timeStamp.setText(String.valueOf(diaEntry.getDate().getTime()));
+        if (dbDiaEntry.getDate() != null) {
+            timeStamp.setText(String.valueOf(dbDiaEntry.getDate().get(Calendar.YEAR)));
         }
 
         // Todo: lädt Bild nicht, herausfinden, warum
-        Uri uri = Uri.parse(diaEntry.getUriString());
-        imageView.setImageURI(uri);
-
+        if (dbDiaEntry.getImage() != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(dbDiaEntry.getImage(), 0, dbDiaEntry.getImage().length);
+            imageView.setImageBitmap(bitmap);
+        }
     }
 }
