@@ -1,9 +1,12 @@
 package rgbg.ss18.android.ephemeris;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,9 +31,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Sets up the toolbar.
+        Toolbar mainToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mainToolbar);
+
         initListView();
         initButtons();
+        setDefaultPreferences();
     }
+
+    // Inflates toolbar menu.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+    // Handles Toolbar Selection.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Switch to SearchActivity
+            case R.id.search:
+
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
+
+                return true;
+
+            // Switch to SettingsActivity
+            case R.id.settings:
+
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+//    Sets the default preferences for Settings
+    private void setDefaultPreferences (){
+        PreferenceManager.setDefaultValues(this,R.xml.preferences, false);
+    }
+
 
     // refresht die ListView immer wenn diese Activity angezeigt wird
     @Override

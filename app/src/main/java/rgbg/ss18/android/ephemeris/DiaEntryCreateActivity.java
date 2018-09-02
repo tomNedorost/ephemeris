@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,6 +92,7 @@ public class DiaEntryCreateActivity extends AppCompatActivity {
             }
         });
 
+        // ToDo: App stürzt ab wenn man kein Bild auswählt
         // onClickListener für Image auswählen setzen
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override

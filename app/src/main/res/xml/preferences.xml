@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Turn Reminder Notifications on/off -->
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="reminder_notification"
+        android:summary="@string/pref_reminder_notifications_summary"
+        android:title="@string/pref_reminder_notifications" />
+
+    <!-- Only active if Reminder is turned on. Turn Vibrate on/off-->
+    <android.support.v7.preference.SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:dependency="reminder_notification"
+        android:key="reminder_notification_vibrate"
+        android:title="@string/pref_reminder_notifications_vibrate" />
+
+
+
+    <!-- ToDo: Add TimePickerPreference-->
+
+</PreferenceScreen>

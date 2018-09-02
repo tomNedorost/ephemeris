@@ -1,13 +1,18 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.Menu;
 
 import java.util.Calendar;
 
@@ -34,6 +39,9 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
 
         initDiaEntry();
         initLayout();
+
+        DiaEntry diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
+
         Log.e("ID ", String.valueOf(diaEntry.getId()));
         Log.e("Name ", diaEntry.getName());
         Log.e("Mood ", String.valueOf(diaEntry.getMood()));
@@ -59,6 +67,8 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         entryText = findViewById(R.id.textView_entryText);
         imageView = findViewById(R.id.imageView_entryImage);
 
+        setUpAppBar();
+
         title.setText(dbDiaEntry.getName());
 
         // wenn der Entry keine Description hat, sollte auf Grund der Konstruktoren nicht möglich sein, aber sicher ist sicher :)
@@ -75,6 +85,58 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         if (dbDiaEntry.getImage() != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(dbDiaEntry.getImage(), 0, dbDiaEntry.getImage().length);
             imageView.setImageBitmap(bitmap);
+        }
+    }
+
+    // Setzt die AppBar auf mitsamt Toolbar.
+    public void setUpAppBar (){
+        // setzt die Toolbar auf
+        Toolbar diaEntryDetailToolbar = findViewById(R.id.dia_entry_detail_toolbar);
+        setSupportActionBar(diaEntryDetailToolbar);
+
+        ActionBar searchActionBar = getSupportActionBar();
+
+        if(searchActionBar != null){
+            searchActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    // Inflates toolbar menu.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.dia_entry_detail_menu, menu);
+
+        return true;
+    }
+
+    // Handles toolbar selection.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Switch to CreateActivity
+            case R.id.edit_entry:
+
+                Intent editIntent = new Intent(this, DiaEntryCreateActivity.class);
+//               ToDo: DiaEntry der bearbeitet werden soll an die CreateActivity übergeben.
+                // editIntent.putExtra()
+
+                startActivity(editIntent);
+
+                return true;
+
+            // Switch to SettingsActivity
+            case R.id.settings:
+
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
         }
     }
 }

@@ -1,14 +1,43 @@
 <resources>
     <string name="app_name">ephemeris</string>
 
-    <string name="dia_entry_detail_title">Title</string>
+    <!-- Strings related DiaEntryDetail. -->
+    <string name="title_activity_detail">Detail Ansicht</string>
+    <string name="dia_entry_detail_title">Titel</string>
 
     <string name="dia_entry_detail_testTag1">Test-Tag1</string>
     <string name="dia_entry_detail_testTag2">Test-Tag2</string>
 
     <string name="dia_entry_detail_moodDescription">Mood-Indicator</string>
     <string name="dia_entry_detail_entryImageDescription">EntryImage</string>
+
+
+    <!-- Strings related to DiaEntryCreate. -->
+    <string name="title_activity_create">Eintrag bearbeiten</string>
+
     <string name="diaEntryTitleEditTextHint">Gib den Titel deines Eintrages ein!</string>
     <string name="diaEntryDescEditTextHint">Was ist heute so passiert?</string>
     <string name="selectImgBtnTxt">Wähle ein Bild aus.</string>
+
+    <!-- Toolbars. -->
+    <string name="toolbar_edit">Bearbeiten</string>
+
+    <!-- Strings related to Search. -->
+    <string name="title_activity_search">Suche</string>
+
+    <!-- Strings related to Settings. -->
+    <string name="title_activity_settings">Einstellungen</string>
+
+    <string name="pref_reminder_notifications">Erinnerungen</string>
+    <string name="pref_reminder_notifications_summary">Werde täglich zu deiner gewählten Uhrzeit daran erinnert einen Tagebucheintrag zu erstellen.</string>
+    <string name="pref_reminder_notifications_vibrate">Vibration</string>
+    <string name="pref_reminder_notifications_ringtone">Klingeltöne</string>
+    <string name="pref_reminder_notifications_ringtone_silent">Stumm</string>
+
+    <!-- Strings related to Map. -->
+    <string name="title_activity_map">Karte</string>
+
+    <!-- Strings related to Calendar. -->
+    <string name="title_activity_calendar">Kalender</string>
+
 </resources>
