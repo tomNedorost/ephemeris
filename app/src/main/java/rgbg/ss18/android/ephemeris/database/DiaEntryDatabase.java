@@ -17,7 +17,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
     // ToDo: Version ändern, wenn neue Column hinzugefügt wurde
     private static final String DB_NAME = "DIARYENTRIES";
-    private static final int VERSION = 15;
+    private static final int VERSION = 18;
     private static final String TABLE_NAME = "diaryentries";
     public static final String ID_COL = "ID";
     public static final String NAME_COL = "name";
@@ -25,10 +25,11 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
     public static final String MOOD_COL = "mood";
     public static final String DESC_COL = "description";
     public static final String IMG_COL = "image";
+    public static final String CITY_COL = "city";
     // ToDo: neue Column hier nennen
 
     // Todo: neue Col hier hinzufügen
-    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL, IMG_COL};
+    private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL, IMG_COL, CITY_COL};
 
     private DiaEntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -50,7 +51,8 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
                 + DATE_COL + " INTEGER DEFAULT NULL, "
                 + MOOD_COL + " INTEGER DEFAULT NULL, "
                 + DESC_COL + " TEXT,"
-                + IMG_COL + " BLOB);";
+                + IMG_COL + " BLOB,"
+                + CITY_COL + " TEXT);";
 
         db.execSQL(createQuery);
     }
@@ -74,6 +76,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         values.put(MOOD_COL, diaEntry.getMood());
         values.put(DESC_COL, diaEntry.getDescription());
         values.put(IMG_COL, diaEntry.getImage());
+        values.put(CITY_COL, diaEntry.getCity());
 
         long newId = db.insert(TABLE_NAME, null, values);
 
@@ -88,7 +91,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
 
     // ToDo: diaEntry richtig mit allen Cols beschreiben
     // Liest einen DiaEntry aus der DB mit hilfe der ID
-    public DiaEntry readDiaEntry(final long id) {
+    public DiaEntry getDiaEntry(final long id) {
         SQLiteDatabase db =  this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, ALL_COLS, ID_COL + " = ?", new String[]{String.valueOf(id)}, null, null, null);
@@ -114,6 +117,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
                 diaEntry.setImage(cursor.getBlob(cursor.getColumnIndex(IMG_COL)));
             }
 
+            diaEntry.setCity(cursor.getString(cursor.getColumnIndex(CITY_COL)));
         }
 
         db.close();
@@ -121,7 +125,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
     }
 
     // Gibt eine Liste mit allen DiaEntries Namen und Datum zurück.
-    public List<DiaEntry> readAllDiaEntries() {
+    public List<DiaEntry> getAllDiaEntries() {
         List<DiaEntry> diaEntries = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -154,12 +158,13 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         contentValues.put(MOOD_COL, diaEntry.getMood());
         contentValues.put(DESC_COL, diaEntry.getDescription());
         contentValues.put(IMG_COL, diaEntry.getImage());
+        contentValues.put(CITY_COL, diaEntry.getCity());
 
         db.update(TABLE_NAME, contentValues, ID_COL + " = ?", new String[]{String.valueOf(diaEntry.getId())});
 
         db.close();
 
-        return this.readDiaEntry(diaEntry.getId());
+        return this.getDiaEntry(diaEntry.getId());
     }
 
     public void deleteDiaEntry(final DiaEntry diaEntry) {

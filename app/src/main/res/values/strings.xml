@@ -41,5 +41,7 @@
     <string name="title_activity_calendar">Kalender</string>
     <string name="searchEditHint">Wonach suchst du?</string>
     <string name="searchBtnText">Suchen</string>
+    <string name="location_input">Gib den Ort ein</string>
+    <string name="location_find_btn">Ort finden</string>
 
 </resources>

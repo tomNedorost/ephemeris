@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     // siehe MainActivity
     private void initListView() {
         searchListView = findViewById(R.id.search_list_view);
-        diaEntries = DiaEntryDatabase.getInstance(this).readAllDiaEntries();
+        diaEntries = DiaEntryDatabase.getInstance(this).getAllDiaEntries();
         adapter = new DiaEntryOverviewListAdapter(this, diaEntries);
         searchListView.setAdapter(adapter);
 

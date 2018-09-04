@@ -28,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     private DiaEntry dbDiaEntry;
 
     // Hier alle Variablen des activity layouts, diese werden in initLayout beschrieben
-    private TextView title, timeStamp, entryText;
+    private TextView title, timeStamp, entryText, location;
     private ImageView imageView;
 
     @Override
@@ -39,15 +39,13 @@ public class DetailActivity extends AppCompatActivity {
         initDiaEntry();
         initLayout();
 
-        DiaEntry diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
-
     }
 
     private void initDiaEntry() {
         // erhält aus dem intent den diaentry, der nur aus einer ID und einem Namen besteht und sucht sich danach mittels der ID den passenden aus der DB.
         // Grund dafür: würden wir alle DiaEntries in der Liste anzeigen, und dort die Bilder auch mit reinladen, würde aufgrund der größe und menge die App abstürzen
         diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
-        dbDiaEntry = DiaEntryDatabase.getInstance(this).readDiaEntry(diaEntry.getId());
+        dbDiaEntry = DiaEntryDatabase.getInstance(this).getDiaEntry(diaEntry.getId());
     }
 
     // zuerst die oben erstellten Variablen beschreiben, dann den Text entsprechend anpassen
@@ -58,6 +56,7 @@ public class DetailActivity extends AppCompatActivity {
         timeStamp = findViewById(R.id.textView_timestamp);
         entryText = findViewById(R.id.textView_entryText);
         imageView = findViewById(R.id.imageView_entryImage);
+        location = findViewById(R.id.textView_location);
 
         setUpAppBar();
 
@@ -78,6 +77,12 @@ public class DetailActivity extends AppCompatActivity {
         if (dbDiaEntry.getImage() != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(dbDiaEntry.getImage(), 0, dbDiaEntry.getImage().length);
             imageView.setImageBitmap(bitmap);
+        }
+
+        // schreibt City, falls vorhanden in die location textview, sonst nichts
+        // ToDo überlegen ob wir eine standard, oder fakestadt hinschreiben
+        if (dbDiaEntry.getCity() != null) {
+            location.setText(dbDiaEntry.getCity());
         }
     }
 

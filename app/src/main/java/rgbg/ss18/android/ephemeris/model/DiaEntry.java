@@ -13,14 +13,16 @@ public class DiaEntry implements Serializable {
     private int mood;
     private String description;
     private byte[] image;
+    private String city;
 
     // Konstruktor, der alle Eigenschaften eines DiaEntries beschreibt
-    public DiaEntry(String name, Calendar date, int mood, String description, byte[] image) {
+    public DiaEntry(String name, Calendar date, int mood, String description, byte[] image, String city) {
         this.name = name;
         this.date = date;
         this.mood = mood;
         this.description = description;
         this.image = image;
+        this.city = city;
     }
 
     public DiaEntry(String name, String description) {
@@ -78,5 +80,13 @@ public class DiaEntry implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

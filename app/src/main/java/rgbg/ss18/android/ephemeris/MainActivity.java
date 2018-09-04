@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListView() {
         this.diaListView = findViewById(R.id.diaListView);
-        this.dataSource = DiaEntryDatabase.getInstance(this).readAllDiaEntries();
+        this.dataSource = DiaEntryDatabase.getInstance(this).getAllDiaEntries();
         this.adapter = new DiaEntryOverviewListAdapter(this, dataSource);
         diaListView.setAdapter(adapter);
 
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshListView() {
         dataSource.clear();
-        dataSource.addAll(DiaEntryDatabase.getInstance(this).readAllDiaEntries());
+        dataSource.addAll(DiaEntryDatabase.getInstance(this).getAllDiaEntries());
         adapter.notifyDataSetChanged();
     }
 }
