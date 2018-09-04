@@ -39,5 +39,7 @@
 
     <!-- Strings related to Calendar. -->
     <string name="title_activity_calendar">Kalender</string>
+    <string name="searchEditHint">Wonach suchst du?</string>
+    <string name="searchBtnText">Suchen</string>
 
 </resources>

@@ -3,7 +3,6 @@ package rgbg.ss18.android.ephemeris;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +18,7 @@ import java.util.Calendar;
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
-public class DiaEntryDetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     // Key für das DiaEntry, das im Extra gespeichert ist
     public static final String TODO_KEY = "DIAENTRY";
@@ -41,13 +40,6 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
         initLayout();
 
         DiaEntry diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
-
-        Log.e("ID ", String.valueOf(diaEntry.getId()));
-        Log.e("Name ", diaEntry.getName());
-        Log.e("Mood ", String.valueOf(diaEntry.getMood()));
-        if (diaEntry.getDescription() != null) {
-            Log.e("Description", diaEntry.getDescription());
-        }
 
     }
 
@@ -73,7 +65,8 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
 
         // wenn der Entry keine Description hat, sollte auf Grund der Konstruktoren nicht möglich sein, aber sicher ist sicher :)
         if (dbDiaEntry.getDescription() != null) {
-            entryText.setText(diaEntry.getDescription());
+            Log.e("Description", dbDiaEntry.getDescription());
+            entryText.setText(dbDiaEntry.getDescription());
         }
         // wenn der Entry nen Datum eingestellt hat, dann diesen beschreiben.
         // Darstellung eventuell anpassen.
@@ -117,7 +110,7 @@ public class DiaEntryDetailActivity extends AppCompatActivity {
             // Switch to CreateActivity
             case R.id.edit_entry:
 
-                Intent editIntent = new Intent(this, DiaEntryCreateActivity.class);
+                Intent editIntent = new Intent(this, CreateActivity.class);
 //               ToDo: DiaEntry der bearbeitet werden soll an die CreateActivity übergeben.
                 // editIntent.putExtra()
 

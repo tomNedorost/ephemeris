@@ -6,7 +6,7 @@
     android:id="@+id/diaEntryDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DiaEntryDetailActivity">
+    tools:context=".DetailActivity">
 
     <!--ToDO: change text to string res-->
 

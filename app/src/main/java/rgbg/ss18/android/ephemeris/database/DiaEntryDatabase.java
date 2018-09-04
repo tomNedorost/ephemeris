@@ -5,14 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import rgbg.ss18.android.ephemeris.MainActivity;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class DiaEntryDatabase extends SQLiteOpenHelper{
@@ -179,5 +176,41 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         db.execSQL("DELETE FROM " + TABLE_NAME);
 
         db.close();
+    }
+
+    public List<DiaEntry> searchFor(String search) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<DiaEntry> diaEntries = new ArrayList<>();
+        boolean entryAdded = false;
+
+        Cursor cursor = db.rawQuery("SELECT " + ID_COL + "," + NAME_COL  + "," + DESC_COL + " FROM " +  TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            do{
+                DiaEntry diaEntry = new DiaEntry(cursor.getString(cursor.getColumnIndex(NAME_COL)));
+                diaEntry.setId(cursor.getLong(cursor.getColumnIndex(ID_COL)));
+
+                if (diaEntry != null) {
+                    if (cursor.getString(cursor.getColumnIndex(DESC_COL)) != null) {
+                        if (cursor.getString(cursor.getColumnIndex(DESC_COL)).toLowerCase().contains(search)) {
+                            diaEntries.add(diaEntry);
+                            entryAdded = true;
+                        }
+                    }
+
+                    if (diaEntry.getName() != null && entryAdded == false) {
+                        if (diaEntry.getName().toLowerCase().contains(search)) {
+                            diaEntries.add(diaEntry);
+                        }
+                    }
+                }
+
+                entryAdded = false;
+            }while(cursor.moveToNext());
+        }
+
+        db.close();
+
+        return diaEntries;
     }
 }

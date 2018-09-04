@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         initListView();
         initButtons();
-        setDefaultPreferences();
+        // setDefaultPreferences();
     }
 
     // Inflates toolbar menu.
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    Sets the default preferences for Settings
-    private void setDefaultPreferences (){
+  private void setDefaultPreferences (){
         PreferenceManager.setDefaultValues(this,R.xml.preferences, false);
     }
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             createBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, DiaEntryCreateActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CreateActivity.class);
                     startActivity(intent);
 
                     refreshListView();
@@ -169,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 if (element instanceof DiaEntry) {
                     DiaEntry diaEntry = (DiaEntry) element;
 
-                    Intent intent = new Intent(MainActivity.this, DiaEntryDetailActivity.class);
-                    intent.putExtra(DiaEntryDetailActivity.TODO_KEY, diaEntry);
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra(DetailActivity.TODO_KEY, diaEntry);
 
                     startActivity(intent);
                 }

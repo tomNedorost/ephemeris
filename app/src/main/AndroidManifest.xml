@@ -20,14 +20,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DiaEntryDetailActivity"
+            android:name=".DetailActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
         <activity
-            android:name=".DiaEntryCreateActivity"
+            android:name=".CreateActivity"
             android:label="@string/title_activity_create"
             android:theme="@style/AppTheme.ActionBar"
             android:parentActivityName=".MainActivity">

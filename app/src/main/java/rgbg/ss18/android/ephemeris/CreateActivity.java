@@ -1,22 +1,16 @@
 package rgbg.ss18.android.ephemeris;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,17 +18,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
-public class DiaEntryCreateActivity extends AppCompatActivity {
+public class CreateActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_GALLERY = 999;
 
@@ -79,7 +70,7 @@ public class DiaEntryCreateActivity extends AppCompatActivity {
                 }
 
                 // verbindung zur DB aufbauen
-                DiaEntryDatabase db = DiaEntryDatabase.getInstance(DiaEntryCreateActivity.this);
+                DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
 
                 // diaEntry hinzufügen zur db
                 db.createEntry(newDiaEntry);
@@ -97,7 +88,7 @@ public class DiaEntryCreateActivity extends AppCompatActivity {
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityCompat.requestPermissions(DiaEntryCreateActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
+                ActivityCompat.requestPermissions(CreateActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
             }
         });
     }
