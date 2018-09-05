@@ -27,10 +27,15 @@
     <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
     <ImageView
         android:id="@+id/imageView_entryImage"
-        android:layout_width="384dp"
-        android:layout_height="158dp"
+        android:layout_width="382dp"
+        android:layout_height="154dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/dia_entry_detail_entryImageDescription"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dia_entry_detail_toolbar"
         app:srcCompat="@drawable/stock_beach" />

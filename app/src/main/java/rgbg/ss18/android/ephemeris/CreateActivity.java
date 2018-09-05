@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +38,8 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class CreateActivity extends AppCompatActivity {
 
+    // ToDo: Abfangen, wenn kein Bild ausgewählt wird, nach Btn drücken
+    // ToDo: Abfangen, wenn Standord nicht aktiv ist (aktuell App absturz)
     private static final int REQUEST_CODE_GALLERY = 999;
     private static final int REQUEST_CODE_LOCATION = 1000;
 
@@ -202,7 +205,10 @@ public class CreateActivity extends AppCompatActivity {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> adresses;
         try{
-            adresses = geocoder.getFromLocation(lat, lon, 1);
+            adresses = geocoder.getFromLocation(lat, lon, 2);
+            for (Address address : adresses) {
+                Log.e("Address", address.getLocality());
+            }
             city = adresses.get(0).getLocality();
         } catch (IOException e) {
             e.printStackTrace();
