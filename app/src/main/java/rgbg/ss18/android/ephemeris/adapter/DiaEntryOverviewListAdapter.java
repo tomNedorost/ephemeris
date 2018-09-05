@@ -35,7 +35,7 @@ public class DiaEntryOverviewListAdapter extends ArrayAdapter<DiaEntry>{
         }
         ((TextView) view.findViewById(R.id.name)).setText(currentDiaEntry.getName());
 
-        TextView date = (TextView) view.findViewById(R.id.date);
+        TextView date = view.findViewById(R.id.date);
 
         if (currentDiaEntry.getDate() == null) {
             date.setVisibility(View.GONE);

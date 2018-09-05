@@ -15,4 +15,10 @@
         android:id="@+id/settings"
         android:title="@string/title_activity_settings"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/clearAllBtn"
+        android:title="@string/clearallbutt"
+        app:showAsAction="never"/>
+
 </menu>

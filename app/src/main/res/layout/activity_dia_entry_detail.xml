@@ -10,7 +10,6 @@
 
     <!--ToDO: change text to string res-->
 
-    <!--ToDo: One Name for Toolbar or Toolbar name changing to Entry Title-->
     <!--Toolbar-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/dia_entry_detail_toolbar"
@@ -25,80 +24,42 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/title_activity_detail" />
 
-
-    <!--TextView for Title-->
-    <TextView
-        android:id="@+id/textView_title"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+    <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
+    <ImageView
+        android:id="@+id/imageView_entryImage"
+        android:layout_width="384dp"
+        android:layout_height="158dp"
         android:layout_marginTop="8dp"
-        android:text="@string/dia_entry_detail_title"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView_mood"
+        android:contentDescription="@string/dia_entry_detail_entryImageDescription"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dia_entry_detail_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/dia_entry_detail_toolbar"
+        app:srcCompat="@drawable/stock_beach" />
 
     <!--Tags inside a LinearLayout wrapped in HorizontalScrollView -->
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView_tags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_title">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Test Tags  declared here. -->
-            <!--ToDo: declare tags dynamically-->
-            <TextView
-                android:id="@+id/textView_testTag1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_tags_drawable"
-                android:text="@string/dia_entry_detail_testTag1"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView_testTag2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_tags_drawable"
-                android:text="@string/dia_entry_detail_testTag2"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
 
     <!-- Placeholder image for mood -->
-    <ImageView
-        android:id="@+id/imageView_mood"
+
+    <!--Time-->
+    <TextView
+        android:id="@+id/textView_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="10:52"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_entryImage"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/dia_entry_detail_moodDescription"
-        android:src="@android:drawable/ic_delete"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView_tags"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dia_entry_detail_toolbar" />
+    <!--Location-->
+    <TextView
+        android:id="@+id/textView_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="Regensburg"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_entryImage"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!--Entry-->
     <TextView
@@ -109,48 +70,15 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="TestTestTest"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView_tags" />
-
-    <!--Time-->
-    <TextView
-        android:id="@+id/textView_timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:text="10:52"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_entryText" />
-
-    <!--Location-->
-    <TextView
-        android:id="@+id/textView_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Regensburg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_entryText" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage"
+        android:textSize="18sp"/>
 
 
-    <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
-    <ImageView
-        android:id="@+id/imageView_entryImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="@string/dia_entry_detail_entryImageDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_timestamp"
-        app:srcCompat="@drawable/stock_beach" />
+
 
 </android.support.constraint.ConstraintLayout>

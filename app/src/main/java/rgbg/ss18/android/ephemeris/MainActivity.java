@@ -2,6 +2,7 @@ package rgbg.ss18.android.ephemeris;
 
 import android.content.Intent;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +22,7 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button createBtn, clearAllBtn, clearFirstBtn, updateFirstBtn;
+    private FloatingActionButton createBtn;
     private ListView diaListView;
     private List<DiaEntry> dataSource;
     private DiaEntryOverviewListAdapter adapter;
@@ -68,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
 
                 return true;
+            case R.id.clearAllBtn:
+
+                DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
+                db.deleteAllDiaEntries();
+
+                refreshListView();
+                return true;
 
             default:
 
@@ -91,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initButtons() {
         createBtn = findViewById(R.id.createBtn);
-        clearAllBtn = findViewById(R.id.clearAllBtn);
-        clearFirstBtn = findViewById(R.id.clearFirstBtn);
-        updateFirstBtn = findViewById(R.id.updateFirstBtn);
 
         setOnClickListener();
     }
@@ -111,47 +116,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        if (clearAllBtn != null) {
-            clearAllBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
-                    db.deleteAllDiaEntries();
 
-                    refreshListView();
-                }
-            });
-        }
-
-        if (clearFirstBtn != null) {
-            clearFirstBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (dataSource.size() > 0 ) {
-                        DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
-                        db.deleteDiaEntry(dataSource.get(0));
-                        refreshListView();
-                    }
-                }
-            });
-        }
-
-        if (updateFirstBtn != null) {
-            updateFirstBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (dataSource.size() > 0) {
-                        DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
-                        Random r = new Random();
-                        dataSource.get(0).setName(String.valueOf(r.nextInt()));
-                        db.updateDiaEntry(dataSource.get(0));
-
-                        refreshListView();
-                    }
-                }
-            });
-        }
     }
 
     private void initListView() {

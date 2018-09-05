@@ -28,8 +28,9 @@ public class DetailActivity extends AppCompatActivity {
     private DiaEntry dbDiaEntry;
 
     // Hier alle Variablen des activity layouts, diese werden in initLayout beschrieben
-    private TextView title, timeStamp, entryText, location;
+    private TextView timeStamp, entryText, location;
     private ImageView imageView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +53,15 @@ public class DetailActivity extends AppCompatActivity {
     // wenn sie nicht als Strings in der DB stehen (vgl. Model DiaEntry) entsprechend parsen
     // an die Inhalte gelangst du mit diaEntry.getWasDuWillst. Wenn dir ein getter fehlt, gib mir einfach Bescheid.
     private void initLayout() {
-        title = findViewById(R.id.textView_title);
         timeStamp = findViewById(R.id.textView_timestamp);
         entryText = findViewById(R.id.textView_entryText);
         imageView = findViewById(R.id.imageView_entryImage);
         location = findViewById(R.id.textView_location);
+        toolbar = findViewById(R.id.dia_entry_detail_toolbar);
 
         setUpAppBar();
 
-        title.setText(dbDiaEntry.getName());
+        toolbar.setTitle(dbDiaEntry.getName());
 
         // wenn der Entry keine Description hat, sollte auf Grund der Konstruktoren nicht möglich sein, aber sicher ist sicher :)
         if (dbDiaEntry.getDescription() != null) {
