@@ -20,7 +20,7 @@
     <string name="selectImgBtnTxt">Wähle ein Bild aus.</string>
 
     <!-- Toolbars. -->
-    <string name="toolbar_edit">Bearbeiten</string>
+    <string name="toolbar_edit">Eintrag bearbeiten</string>
 
     <!-- Strings related to Search. -->
     <string name="title_activity_search">Suche</string>
@@ -44,5 +44,7 @@
     <string name="location_input">Gib den Ort ein</string>
     <string name="location_find_btn">Ort finden</string>
     <string name="clearallbutt">Alle Einträge löschen</string>
+    <string name="clear_btn_txt">Eintrag löschen</string>
+    <string name="create_Entry_btn">Eintrag erstellen</string>
 
 </resources>

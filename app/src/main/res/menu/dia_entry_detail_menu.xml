@@ -2,16 +2,19 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!--EditButton-->
-    <item
-        android:id="@+id/edit_entry"
-        android:icon="@drawable/ic_edit_black_24dp"
-        android:title="@string/toolbar_edit"
-        app:showAsAction="ifRoom" />
-
     <!--Settings-->
     <item
         android:id="@+id/settings"
         android:title="@string/title_activity_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/edit_entry"
+        android:title="@string/toolbar_edit"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/clearBtn"
+        android:title="@string/clear_btn_txt"
+        app:showAsAction="never"/>
 </menu>

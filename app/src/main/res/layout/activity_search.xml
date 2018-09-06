@@ -30,7 +30,8 @@
             android:hint="@string/searchEditHint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".70"/>
+            android:layout_weight=".70"
+            android:maxLength="20"/>
         <Button
             android:id="@+id/search_btn"
             android:text="@string/searchBtnText"

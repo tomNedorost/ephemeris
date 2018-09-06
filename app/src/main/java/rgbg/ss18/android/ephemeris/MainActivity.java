@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                 DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
                 db.deleteAllDiaEntries();
+                db.close();
 
                 refreshListView();
                 return true;

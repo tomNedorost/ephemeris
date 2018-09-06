@@ -19,6 +19,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,11 +31,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
+
+import static rgbg.ss18.android.ephemeris.DetailActivity.TODO_KEY;
 
 
 public class CreateActivity extends AppCompatActivity {
@@ -43,8 +48,9 @@ public class CreateActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GALLERY = 999;
     private static final int REQUEST_CODE_LOCATION = 1000;
 
+    private DiaEntry diaEntry, dbDiaEntry;
     private EditText title, description, city;
-    private Button save, selectImage, findLocation;
+    private Button selectImage, findLocation;
     private ImageView imageView;
 
     @Override
@@ -53,7 +59,43 @@ public class CreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dia_entry_create);
 
         init();
+
+        // wenn der Eintrag bearbeitet werden soll
+        if (getIntent().getSerializableExtra(TODO_KEY) != null) {
+            initWithEntry();
+        }
+
         initBtn();
+    }
+
+    // inits layout mit DiaEntry
+    private void initWithEntry() {
+        diaEntry = (DiaEntry) getIntent().getSerializableExtra(TODO_KEY);
+        dbDiaEntry = DiaEntryDatabase.getInstance(this).getDiaEntry(diaEntry.getId());
+
+        DiaEntryDatabase.getInstance(this).deleteDiaEntry(diaEntry);
+
+        // checks every field, if filled and fills it
+        // title
+        if (dbDiaEntry.getName() != null) {
+            title.setText(dbDiaEntry.getName());
+        }
+
+        // description
+        if (dbDiaEntry.getDescription() != null) {
+            description.setText(dbDiaEntry.getDescription());
+        }
+
+        // image
+        if (dbDiaEntry.getImage() != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(dbDiaEntry.getImage(), 0, dbDiaEntry.getImage().length);
+            imageView.setImageBitmap(bitmap);
+        }
+
+        // city
+        if (dbDiaEntry.getCity() != null) {
+            city.setText(dbDiaEntry.getCity());
+        }
     }
 
     private void init() {
@@ -66,41 +108,8 @@ public class CreateActivity extends AppCompatActivity {
     // Sobald der Eintrag erstellen Button aufgerufen wird
     private void initBtn() {
         // Buttons instanziieren
-        save = findViewById(R.id.createDiaEntryBtn);
         selectImage = findViewById(R.id.selectImageBtn);
         findLocation = findViewById(R.id.location_find_btn);
-
-        // onClickListener für save setzen
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt. Wenn du noch weitere Konstruktoren brauchst, gib Bescheid
-                final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
-
-                // fügt das bild zum DiaEntry als byte[] hinzu.
-                try {
-                    byte[] image = imageViewToByte(imageView);
-                    newDiaEntry.setImage(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (city.getText().toString() != null) {
-                    newDiaEntry.setCity(city.getText().toString());
-                }
-                // Verbindung zur DB aufbauen
-                DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
-
-                // diaEntry hinzufügen zur db
-                db.createEntry(newDiaEntry);
-
-                // verbindung zur DB schließen WICHTIG muss immer gemacht werden, wenn wir die db verwenden, da es sonst zu komplikationen kommt
-                db.close();
-
-                // Activity schließen, eventueller Toast für erfolgreiche speicherung
-                finish();
-            }
-        });
 
         // ToDo: App stürzt ab wenn man kein Bild auswählt
         // onClickListener für Image auswählen setzen
@@ -164,19 +173,22 @@ public class CreateActivity extends AppCompatActivity {
     // verwandelt das Bild in eine bitmap, die wir in unsere DB speichern können
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Uri uri = data.getData();
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            // wichtig! verkleinert das bild, sodass der Eintrag nicht die größe des Windows überschreitet. maxSize müssen wir hier noch austeste wie groß wir gehen können.
-            bitmap = getResizedBitmap(bitmap, 1000);
-            imageView.setImageBitmap(bitmap);
-            inputStream.close();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // überprüft, ob ein Bild ausgewählt wurde
+        if (resultCode != 0) {
+            Uri uri = data.getData();
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                // wichtig! verkleinert das bild, sodass der Eintrag nicht die größe des Windows überschreitet. maxSize müssen wir hier noch austeste wie groß wir gehen können.
+                bitmap = getResizedBitmap(bitmap, 1000);
+                imageView.setImageBitmap(bitmap);
+                inputStream.close();
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -185,14 +197,14 @@ public class CreateActivity extends AppCompatActivity {
     private Bitmap getResizedBitmap(Bitmap bitmap, int maxSize) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-
         float bitmapRatio = (float) width / (float) height;
+
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);
         } else {
             height = maxSize;
-            width = (int) (height * bitmapRatio);
+            width = (int) (height / bitmapRatio);
         }
 
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
@@ -216,5 +228,54 @@ public class CreateActivity extends AppCompatActivity {
         }
 
         return city;
+    }
+
+    // Inflates toolbar menu.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.dia_entry_create_menu, menu);
+
+        return true;
+    }
+
+    // Handles toolbar selection.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Creates Entry and saves it to db
+            case R.id.createBtn:
+                // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt. Wenn du noch weitere Konstruktoren brauchst, gib Bescheid
+                final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
+
+                newDiaEntry.setDate(Calendar.getInstance());
+                // fügt das bild zum DiaEntry als byte[] hinzu.
+                try {
+                    byte[] image = imageViewToByte(imageView);
+                    newDiaEntry.setImage(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (city.getText().toString() != null) {
+                    newDiaEntry.setCity(city.getText().toString());
+                }
+                // Verbindung zur DB aufbauen
+                DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
+
+                // diaEntry hinzufügen zur db
+                db.createEntry(newDiaEntry);
+
+                // verbindung zur DB schließen WICHTIG muss immer gemacht werden, wenn wir die db verwenden, da es sonst zu komplikationen kommt
+                db.close();
+
+                // Activity schließen, eventueller Toast für erfolgreiche speicherung
+                finish();
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

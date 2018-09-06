@@ -1,5 +1,6 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.Menu;
@@ -69,9 +72,17 @@ public class DetailActivity extends AppCompatActivity {
             entryText.setText(dbDiaEntry.getDescription());
         }
         // wenn der Entry nen Datum eingestellt hat, dann diesen beschreiben.
-        // Darstellung eventuell anpassen.
+        // damit die Uhrzeit gut aussieht unterschiedliche versionen mit führenden 0en
         if (dbDiaEntry.getDate() != null) {
-            timeStamp.setText(String.valueOf(dbDiaEntry.getDate().get(Calendar.YEAR)));
+            if (dbDiaEntry.getDate().get(Calendar.HOUR) < 10 && dbDiaEntry.getDate().get(Calendar.MINUTE) < 10) {
+                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um 0" + dbDiaEntry.getDate().get(Calendar.HOUR) + ":0" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
+            } else if (dbDiaEntry.getDate().get(Calendar.HOUR) < 10 && dbDiaEntry.getDate().get(Calendar.MINUTE) >= 10) {
+                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um 0" + dbDiaEntry.getDate().get(Calendar.HOUR) + ":" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
+            } else if (dbDiaEntry.getDate().get(Calendar.HOUR) >= 10 && dbDiaEntry.getDate().get(Calendar.MINUTE) < 10) {
+                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um " + dbDiaEntry.getDate().get(Calendar.HOUR) + ":0" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
+            } else {
+                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um " + dbDiaEntry.getDate().get(Calendar.HOUR) + ":" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
+            }
         }
 
         // lädt Bild, falls vorhanden in die imageview um, sonst platzhalterbild
@@ -117,11 +128,10 @@ public class DetailActivity extends AppCompatActivity {
             case R.id.edit_entry:
 
                 Intent editIntent = new Intent(this, CreateActivity.class);
-//               ToDo: DiaEntry der bearbeitet werden soll an die CreateActivity übergeben.
-                // editIntent.putExtra()
+                editIntent.putExtra(TODO_KEY, diaEntry);
 
                 startActivity(editIntent);
-
+                finish();
                 return true;
 
             // Switch to SettingsActivity
@@ -132,6 +142,15 @@ public class DetailActivity extends AppCompatActivity {
 
                 return true;
 
+            // Delete Entry and return to previous screen.
+            case R.id.clearBtn:
+                DiaEntryDatabase db = DiaEntryDatabase.getInstance(DetailActivity.this);
+                db.deleteDiaEntry(dbDiaEntry);
+                db.close();
+
+                finish();
+
+                return true;
             default:
 
                 return super.onOptionsItemSelected(item);
