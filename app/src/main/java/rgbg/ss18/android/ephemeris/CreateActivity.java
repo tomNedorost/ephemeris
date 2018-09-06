@@ -180,7 +180,7 @@ public class CreateActivity extends AppCompatActivity {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 // wichtig! verkleinert das bild, sodass der Eintrag nicht die größe des Windows überschreitet. maxSize müssen wir hier noch austeste wie groß wir gehen können.
-                bitmap = getResizedBitmap(bitmap, 1000);
+                bitmap = getResizedBitmap(bitmap, 500);
                 imageView.setImageBitmap(bitmap);
                 inputStream.close();
             }
@@ -204,7 +204,7 @@ public class CreateActivity extends AppCompatActivity {
             height = (int) (width / bitmapRatio);
         } else {
             height = maxSize;
-            width = (int) (height / bitmapRatio);
+            width = (int) (height * bitmapRatio);
         }
 
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
