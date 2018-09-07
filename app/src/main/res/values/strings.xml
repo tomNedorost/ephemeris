@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ephemeris</string>
 
-    <!-- Strings related DiaEntryDetail. -->
+    <!-- Strings related Detail. -->
     <string name="title_activity_detail">Detail Ansicht</string>
     <string name="dia_entry_detail_title">Titel</string>
 
@@ -11,19 +11,22 @@
     <string name="dia_entry_detail_moodDescription">Mood-Indicator</string>
     <string name="dia_entry_detail_entryImageDescription">EntryImage</string>
 
-
-    <!-- Strings related to DiaEntryCreate. -->
+    <!-- Strings related to Create. -->
     <string name="title_activity_create">Eintrag bearbeiten</string>
-
     <string name="diaEntryTitleEditTextHint">Gib den Titel deines Eintrages ein!</string>
     <string name="diaEntryDescEditTextHint">Was ist heute so passiert?</string>
     <string name="selectImgBtnTxt">Wähle ein Bild aus.</string>
+    <string name="location_input">Gib den Ort ein.</string>
+    <string name="location_find_btn">Ort finden</string>
+    <string name="moodSelect_text">Wie ist deine aktuelle Stimmung?</string>
 
     <!-- Toolbars. -->
     <string name="toolbar_edit">Eintrag bearbeiten</string>
 
     <!-- Strings related to Search. -->
     <string name="title_activity_search">Suche</string>
+    <string name="searchEditHint">Wonach suchst du?</string>
+    <string name="searchBtnText">Suchen</string>
 
     <!-- Strings related to Settings. -->
     <string name="title_activity_settings">Einstellungen</string>
@@ -33,18 +36,23 @@
     <string name="pref_reminder_notifications_vibrate">Vibration</string>
     <string name="pref_reminder_notifications_ringtone">Klingeltöne</string>
     <string name="pref_reminder_notifications_ringtone_silent">Stumm</string>
+    <string name="pref_reminder_notifications_time">Uhrzeit</string>
+    <string name="pref_reminder_notifications_time_set">OK</string>
+    <string name="pref_reminder_notifications_time_cancel">Abbrechen</string>
 
     <!-- Strings related to Map. -->
     <string name="title_activity_map">Karte</string>
 
     <!-- Strings related to Calendar. -->
     <string name="title_activity_calendar">Kalender</string>
-    <string name="searchEditHint">Wonach suchst du?</string>
-    <string name="searchBtnText">Suchen</string>
-    <string name="location_input">Gib den Ort ein</string>
-    <string name="location_find_btn">Ort finden</string>
     <string name="clearallbutt">Alle Einträge löschen</string>
     <string name="clear_btn_txt">Eintrag löschen</string>
     <string name="create_Entry_btn">Eintrag erstellen</string>
+
+    <!-- Strings related to Reminder Notification. -->
+    <string name="reminder_notification_title">Tagebuch Errinnerung.</string>
+    <string name="reminder_notification_text">Erstelle jetzt einen neuen Tagebucheintrag!</string>
+    <string name="reminder_notification_channel_name">reminder</string>
+    <string name="reminder_notification_channel_description">This is the Reminder Notification</string>
 
 </resources>

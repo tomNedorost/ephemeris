@@ -3,20 +3,25 @@ package rgbg.ss18.android.ephemeris;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -37,6 +43,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import rgbg.ss18.android.ephemeris.adapter.MoodArrayAdapter;
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
@@ -52,7 +59,7 @@ public class CreateActivity extends AppCompatActivity {
     private DiaEntry diaEntry, dbDiaEntry;
     private EditText title, description, city;
     private FloatingActionButton createBtn;
-    private ImageButton selectImage, findLocation;
+    private ImageButton selectImage, findLocation, selectMood;
     private ImageView imageView;
 
     @Override
@@ -111,8 +118,10 @@ public class CreateActivity extends AppCompatActivity {
     private void initBtn() {
         // Buttons instanziieren
         selectImage = findViewById(R.id.selectImageBtn);
+        selectMood =findViewById(R.id.imageButton_moodSelect);
         findLocation = findViewById(R.id.location_find_btn);
         createBtn = findViewById(R.id.createBtn);
+
 
         // ToDo: App stürzt ab wenn man kein Bild auswählt
         // onClickListener für Image auswählen setzen
@@ -120,6 +129,14 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ActivityCompat.requestPermissions(CreateActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
+            }
+        });
+
+        // onClickListener für Mood auswählen
+        selectMood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -167,6 +184,43 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    // ToDo: finish MoodArrayAdapter + case selection
+    public void showMoodSelectDialog(View view){
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        ListAdapter moodAdapter = new MoodArrayAdapter(this, R.array.mood_array);
+
+        mBuilder.setTitle(R.string.moodSelect_text);
+      //  int itemSelected = 4;
+       // mBuilder.setSingleChoiceItems
+        mBuilder.setAdapter(moodAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int moodNr) {
+                switch (moodNr) {
+                    // very disappointed
+                    case 0:
+
+                        // disappointed
+                    case 1:
+
+                        // neutral
+                    case 2:
+
+                        // satisfied
+                    case 3:
+
+                        // very satisfied
+                    case 4:
+
+                }
+            }
+        });
+        AlertDialog moodDialog = mBuilder.create();
+        moodDialog.show();
+    }
+
 
     // verwandelt das Bild in eine byte[], welche in einem DiaEntry und anschließend in der DB gespeichert werden kann
     private byte[] imageViewToByte(ImageView imageView) throws IOException {
