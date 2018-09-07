@@ -27,13 +27,12 @@
     <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
     <ImageView
         android:id="@+id/imageView_entryImage"
-        android:layout_width="382dp"
-        android:layout_height="154dp"
+        android:layout_width="390dp"
+        android:layout_height="155dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:contentDescription="@string/dia_entry_detail_entryImageDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,41 +48,44 @@
         android:id="@+id/textView_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:padding="5dp"
-        android:background="#FFFFFF"
         android:text="13:37"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_entryImage"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage" />
 
     <!--Location-->
     <TextView
         android:id="@+id/textView_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="#FFFFFF"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:padding="5dp"
         android:text="Regensburg"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_entryImage"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage" />
 
     <!--Entry-->
     <TextView
         android:id="@+id/textView_entryText"
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
+        android:singleLine="false"
         android:text="TestTestTest"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_timestamp" />
 
 
 

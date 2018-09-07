@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 public class SearchActivity extends AppCompatActivity {
 
     private EditText searchText;
-    private Button searchButton;
+    private ImageButton searchButton;
     private List<DiaEntry> diaEntries;
     private ListView searchListView;
     private DiaEntryOverviewListAdapter adapter;

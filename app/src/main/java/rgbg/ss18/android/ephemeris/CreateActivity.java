@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -49,7 +51,8 @@ public class CreateActivity extends AppCompatActivity {
 
     private DiaEntry diaEntry, dbDiaEntry;
     private EditText title, description, city;
-    private Button selectImage, findLocation;
+    private FloatingActionButton createBtn;
+    private ImageButton selectImage, findLocation;
     private ImageView imageView;
 
     @Override
@@ -109,6 +112,7 @@ public class CreateActivity extends AppCompatActivity {
         // Buttons instanziieren
         selectImage = findViewById(R.id.selectImageBtn);
         findLocation = findViewById(R.id.location_find_btn);
+        createBtn = findViewById(R.id.createBtn);
 
         // ToDo: App stürzt ab wenn man kein Bild auswählt
         // onClickListener für Image auswählen setzen
@@ -123,6 +127,43 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ActivityCompat.requestPermissions(CreateActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
+            }
+        });
+
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // verhindert, dass man durch schnelle drücken des Buttons mehrere Einträge erstellt.
+                createBtn.setClickable(false);
+                // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt. Wenn du noch weitere Konstruktoren brauchst, gib Bescheid
+                final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
+
+                newDiaEntry.setDate(Calendar.getInstance());
+                // fügt das bild zum DiaEntry als byte[] hinzu.
+                if (imageView.getDrawable() != null) {
+                    try {
+                        byte[] image = imageViewToByte(imageView);
+                        newDiaEntry.setImage(image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                if (city.getText().toString() != null) {
+                    newDiaEntry.setCity(city.getText().toString());
+                }
+                // Verbindung zur DB aufbauen
+                DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
+
+                // diaEntry hinzufügen zur db
+                db.createEntry(newDiaEntry);
+
+                // verbindung zur DB schließen WICHTIG muss immer gemacht werden, wenn wir die db verwenden, da es sonst zu komplikationen kommt
+                db.close();
+
+                // Activity schließen, eventueller Toast für erfolgreiche speicherung
+                finish();
             }
         });
     }
@@ -229,14 +270,6 @@ public class CreateActivity extends AppCompatActivity {
         return city;
     }
 
-    // Inflates toolbar menu.
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.dia_entry_create_menu, menu);
-
-        return true;
-    }
-
     // Handles toolbar selection.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -244,32 +277,7 @@ public class CreateActivity extends AppCompatActivity {
 
             // Creates Entry and saves it to db
             case R.id.createBtn:
-                // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt. Wenn du noch weitere Konstruktoren brauchst, gib Bescheid
-                final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
 
-                newDiaEntry.setDate(Calendar.getInstance());
-                // fügt das bild zum DiaEntry als byte[] hinzu.
-                try {
-                    byte[] image = imageViewToByte(imageView);
-                    newDiaEntry.setImage(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (city.getText().toString() != null) {
-                    newDiaEntry.setCity(city.getText().toString());
-                }
-                // Verbindung zur DB aufbauen
-                DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
-
-                // diaEntry hinzufügen zur db
-                db.createEntry(newDiaEntry);
-
-                // verbindung zur DB schließen WICHTIG muss immer gemacht werden, wenn wir die db verwenden, da es sonst zu komplikationen kommt
-                db.close();
-
-                // Activity schließen, eventueller Toast für erfolgreiche speicherung
-                finish();
 
             default:
 
