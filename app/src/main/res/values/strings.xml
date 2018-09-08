@@ -56,5 +56,6 @@
     <string name="reminder_notification_text">Erstelle jetzt einen neuen Tagebucheintrag!</string>
     <string name="reminder_notification_channel_name">reminder</string>
     <string name="reminder_notification_channel_description">This is the Reminder Notification</string>
+    <string name="createBtnTxt">Eintrag erstellen</string>
 
 </resources>

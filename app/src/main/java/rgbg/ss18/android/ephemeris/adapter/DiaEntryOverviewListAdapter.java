@@ -42,7 +42,7 @@ public class DiaEntryOverviewListAdapter extends ArrayAdapter<DiaEntry>{
             date.setVisibility(View.GONE);
         } else {
             date.setVisibility(View.VISIBLE);
-            date.setText(String.valueOf(new SimpleDateFormat("d.MMM.yyyy").format(currentDiaEntry.getDate().getTime())));
+            date.setText(String.valueOf(new SimpleDateFormat("d.MMMyyyy").format(currentDiaEntry.getDate().getTime())));
         }
 
         return view;

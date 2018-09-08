@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Sets the default preferences for Settings
-  private void setDefaultPreferences (){
+  /* private void setDefaultPreferences (){
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
-
+*/
     // init Settings
     private void initSettings () {
-        setDefaultPreferences();
+       // setDefaultPreferences();
         SharedPreferences reminderSharedPref =  PreferenceManager.getDefaultSharedPreferences(this);
 
         // Sets Notification according to Settings

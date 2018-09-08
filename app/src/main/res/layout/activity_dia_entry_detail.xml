@@ -27,12 +27,8 @@
     <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
     <ImageView
         android:id="@+id/imageView_entryImage"
-        android:layout_width="390dp"
-        android:layout_height="155dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
         android:contentDescription="@string/dia_entry_detail_entryImageDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
