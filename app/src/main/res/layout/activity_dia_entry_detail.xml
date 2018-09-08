@@ -57,6 +57,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/dia_entry_detail_moodDescription"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_location"
         app:srcCompat="@drawable/ic_sentiment_5_very_satisfied_black_24dp" />
