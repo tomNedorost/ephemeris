@@ -16,7 +16,7 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/title_activity_search" />
+        app:title="@string/search_activity_title" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -38,16 +38,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".70"
-            android:hint="@string/searchEditHint"
+            android:hint="@string/search_editTextHint"
             android:maxLength="20" />
 
         <ImageButton
             android:id="@+id/search_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="6dp"
             android:layout_height="match_parent"
             android:layout_weight=".30"
             android:background="@color/colorPrimary"
-            android:text="@string/searchBtnText"
+            android:text="@string/search_imageButton"
             app:srcCompat="@drawable/ic_search_black_24dp" />
     </LinearLayout>
 

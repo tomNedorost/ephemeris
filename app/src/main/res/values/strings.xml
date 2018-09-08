@@ -1,61 +1,62 @@
 <resources>
     <string name="app_name">ephemeris</string>
 
-    <!-- Strings related Detail. -->
-    <string name="title_activity_detail">Detail Ansicht</string>
-    <string name="dia_entry_detail_title">Titel</string>
+    <!-- Strings related to Main. -->
+    <string name="title_overview_txt">Name</string>
+    <string name="date_overview_txt">Date</string>
 
-    <string name="dia_entry_detail_testTag1">Test-Tag1</string>
-    <string name="dia_entry_detail_testTag2">Test-Tag2</string>
+    <!-- Strings related to Detail. -->
+    <string name="detail_activity_title">Detail Ansicht</string>
+    <!--ToDo: No usages-->
+    <string name="detail_textView_title">Titel</string>
+    <string name="detail_textView_testTime">Am 1.1.2018 um 13:37</string>
+    <string name="detail_textView_testLocation">Regensburg</string>
+    <string name="detail_textView_testText">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="detail_imageViewDesc_mood">Stimmungsangabe</string>
+    <string name="detail_imageViewDesc_entryImage">Eintrags-Bild</string>
 
-    <string name="dia_entry_detail_moodDescription">Mood-Indicator</string>
-    <string name="dia_entry_detail_entryImageDescription">EntryImage</string>
 
     <!-- Strings related to Create. -->
-    <string name="title_activity_create">Eintrag bearbeiten</string>
-    <string name="diaEntryTitleEditTextHint">Gib den Titel deines Eintrages ein!</string>
-    <string name="diaEntryDescEditTextHint">Was ist heute so passiert?</string>
-    <string name="selectImgBtnTxt">Wähle ein Bild aus.</string>
-    <string name="location_input">Gib den Ort ein.</string>
-    <string name="location_find_btn">Ort finden</string>
-    <string name="moodSelect_text">Wie ist deine aktuelle Stimmung?</string>
+    <string name="create_activity_title">Eintrag bearbeiten</string>
+    <string name="create_editTextHint_title">Gib den Titel deines Eintrages ein!</string>
+    <string name="create_editTextHint_desc">Was ist heute so passiert?</string>
+    <!--ToDo: No usages-->
+    <string name="create_textView_selectImage">Wähle ein Bild aus.</string>
+    <string name="create_editText_location">Gib den Ort ein.</string>
+    <string name="create_imageButton_locationFinder">Ort finden</string>
+    <string name="create_textView_moodSelect">Wie ist deine aktuelle Stimmung?</string>
+    <!--ToDo: No usages-->
+    <string name="create_Entry_btn">Eintrag erstellen</string>
 
-    <!-- Toolbars. -->
+    <!-- Strings related to Toolbars. -->
     <string name="toolbar_edit">Eintrag bearbeiten</string>
+    <string name="toolbar_clearAll">Alle Einträge löschen</string>
+    <string name="toolbar_clearThis">Eintrag löschen</string>
 
     <!-- Strings related to Search. -->
-    <string name="title_activity_search">Suche</string>
-    <string name="searchEditHint">Wonach suchst du?</string>
-    <string name="searchBtnText">Suchen</string>
+    <string name="search_activity_title">Suche</string>
+    <string name="search_editTextHint">Wonach suchst du?</string>
+    <string name="search_imageButton">Suchen</string>
 
-    <!-- Strings related to Settings. -->
-    <string name="title_activity_settings">Einstellungen</string>
-
+    <!-- Strings related to Settings & Preferences -->
+    <string name="settings_activity_title">Einstellungen</string>
     <string name="pref_reminder_notifications">Erinnerungen</string>
     <string name="pref_reminder_notifications_summary">Werde täglich zu deiner gewählten Uhrzeit daran erinnert einen Tagebucheintrag zu erstellen.</string>
     <string name="pref_reminder_notifications_vibrate">Vibration</string>
     <string name="pref_reminder_notifications_ringtone">Klingeltöne</string>
     <string name="pref_reminder_notifications_ringtone_silent">Stumm</string>
     <string name="pref_reminder_notifications_time">Uhrzeit</string>
+    <!--ToDo: No usages ?-->
     <string name="pref_reminder_notifications_time_set">OK</string>
     <string name="pref_reminder_notifications_time_cancel">Abbrechen</string>
 
     <!-- Strings related to Map. -->
-    <string name="title_activity_map">Karte</string>
-
-    <!-- Strings related to Calendar. -->
-    <string name="title_activity_calendar">Kalender</string>
-    <string name="clearallbutt">Alle Einträge löschen</string>
-    <string name="clear_btn_txt">Eintrag löschen</string>
-    <string name="create_Entry_btn">Eintrag erstellen</string>
-    <string name="title_overview_txt">Name</string>
-    <string name="date_overview_txt">Date</string>
+    <string name="map_activity_title">Karte</string>
 
     <!-- Strings related to Reminder Notification. -->
     <string name="reminder_notification_title">Tagebuch Errinnerung.</string>
     <string name="reminder_notification_text">Erstelle jetzt einen neuen Tagebucheintrag!</string>
     <string name="reminder_notification_channel_name">reminder</string>
     <string name="reminder_notification_channel_description">This is the Reminder Notification</string>
-    <string name="createBtnTxt">Eintrag erstellen</string>
 
 </resources>

@@ -22,14 +22,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/title_activity_detail" />
+        app:title="@string/detail_activity_title" />
 
     <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
     <ImageView
         android:id="@+id/imageView_entryImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:contentDescription="@string/dia_entry_detail_entryImageDescription"
+        android:contentDescription="@string/detail_imageViewDesc_entryImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dia_entry_detail_toolbar"
@@ -44,7 +44,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:padding="5dp"
-        android:text="13:37"
+        android:text="@string/detail_textView_testTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage" />
 
@@ -54,12 +54,15 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/dia_entry_detail_moodDescription"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_location"
+        android:background="@android:color/background_light"
+        android:contentDescription="@string/detail_imageViewDesc_mood"
+        app:layout_constraintEnd_toStartOf="@+id/textView_location"
+        app:layout_constraintStart_toEndOf="@+id/textView_timestamp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage"
         app:srcCompat="@drawable/ic_sentiment_5_very_satisfied_black_24dp" />
 
     <!--Location-->
@@ -71,7 +74,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:padding="5dp"
-        android:text="Regensburg"
+        android:text="@string/detail_textView_testLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage" />
 
@@ -86,7 +89,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:singleLine="false"
-        android:text="TestTestTest"
+        android:text="@string/detail_textView_testText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.03"

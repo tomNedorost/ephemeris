@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".CreateActivity"
-            android:label="@string/title_activity_create"
+            android:label="@string/create_activity_title"
             android:theme="@style/AppTheme.ActionBar"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".SearchActivity"
-            android:label="@string/title_activity_search"
+            android:label="@string/search_activity_title"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -50,7 +50,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/settings_activity_title"
             android:theme="@style/AppTheme.ActionBar"
             android:parentActivityName=".MainActivity">
             <meta-data
