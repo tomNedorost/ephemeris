@@ -32,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // Hier alle Variablen des activity layouts, diese werden in initLayout beschrieben
     private TextView timeStamp, entryText, location;
-    private ImageView imageView;
+    private ImageView imageView, mood;
     private Toolbar toolbar;
 
     @Override
@@ -61,6 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView_entryImage);
         location = findViewById(R.id.textView_location);
         toolbar = findViewById(R.id.dia_entry_detail_toolbar);
+        mood = findViewById(R.id.imageView_mood);
 
         setUpAppBar();
 
@@ -96,6 +97,9 @@ public class DetailActivity extends AppCompatActivity {
         if (dbDiaEntry.getCity() != null) {
             location.setText(dbDiaEntry.getCity());
         }
+
+        //lädt Mood, falls vorhanden, ansonsten platzhaltermood
+
     }
 
     // Setzt die AppBar auf mitsamt Toolbar.

@@ -55,19 +55,15 @@
     <!--Mood-->
     <ImageView
         android:id="@+id/imageView_mood"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/dia_entry_detail_moodDescription"
-        app:layout_constraintEnd_toStartOf="@+id/textView_location"
-        app:layout_constraintStart_toEndOf="@+id/textView_timestamp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_entryImage"
-        app:srcCompat="@drawable/ic_sentiment_5_very_satisfied_black_24dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_location"
+        app:srcCompat="@drawable/ic_sentiment_5_very_satisfied_black_24dp" />
 
     <!--Location-->
     <TextView
