@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class DiaEntryOverviewListAdapter extends ArrayAdapter<DiaEntry>{
             date.setVisibility(View.GONE);
         } else {
             date.setVisibility(View.VISIBLE);
-            date.setText(String.valueOf(currentDiaEntry.getDate().get(Calendar.YEAR)));
+            date.setText(String.valueOf(new SimpleDateFormat("d.MMM.yyyy").format(currentDiaEntry.getDate().getTime())));
         }
 
         return view;

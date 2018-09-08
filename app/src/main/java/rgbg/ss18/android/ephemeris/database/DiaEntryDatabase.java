@@ -5,10 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
@@ -129,12 +132,22 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         List<DiaEntry> diaEntries = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT " + ID_COL + "," + NAME_COL + " FROM " +  TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT " + ID_COL + "," + NAME_COL + "," + DATE_COL + " FROM " +  TABLE_NAME, null);
 
         if (cursor.moveToFirst()) {
             do{
                 DiaEntry diaEntry = new DiaEntry(cursor.getString(cursor.getColumnIndex(NAME_COL)));
                 diaEntry.setId(cursor.getLong(cursor.getColumnIndex(ID_COL)));
+
+                Calendar calendar = null;
+
+                if (!cursor.isNull(cursor.getColumnIndex(DATE_COL))) {
+                    calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DATE_COL)) * 1000);
+                }
+
+                diaEntry.setDate(calendar);
+                // ToDO: Date hinzufügen, damit man es in der ListView anzeigen kann.
                 if (diaEntry != null) {
                     diaEntries.add(diaEntry);
                 }

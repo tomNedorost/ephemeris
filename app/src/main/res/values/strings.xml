@@ -46,5 +46,7 @@
     <string name="clearallbutt">Alle Einträge löschen</string>
     <string name="clear_btn_txt">Eintrag löschen</string>
     <string name="create_Entry_btn">Eintrag erstellen</string>
+    <string name="title_overview_txt">Name</string>
+    <string name="date_overview_txt">Date</string>
 
 </resources>

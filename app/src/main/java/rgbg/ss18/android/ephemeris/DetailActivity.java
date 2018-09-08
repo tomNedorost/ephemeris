@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.Menu;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
@@ -74,15 +75,7 @@ public class DetailActivity extends AppCompatActivity {
         // wenn der Entry nen Datum eingestellt hat, dann diesen beschreiben.
         // damit die Uhrzeit gut aussieht unterschiedliche versionen mit führenden 0en
         if (dbDiaEntry.getDate() != null) {
-            if (dbDiaEntry.getDate().get(Calendar.HOUR) < 10 && dbDiaEntry.getDate().get(Calendar.MINUTE) < 10) {
-                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um 0" + dbDiaEntry.getDate().get(Calendar.HOUR) + ":0" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
-            } else if (dbDiaEntry.getDate().get(Calendar.HOUR) < 10 && dbDiaEntry.getDate().get(Calendar.MINUTE) >= 10) {
-                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um 0" + dbDiaEntry.getDate().get(Calendar.HOUR) + ":" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
-            } else if (dbDiaEntry.getDate().get(Calendar.HOUR) >= 10 && dbDiaEntry.getDate().get(Calendar.MINUTE) < 10) {
-                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um " + dbDiaEntry.getDate().get(Calendar.HOUR) + ":0" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
-            } else {
-                timeStamp.setText(String.valueOf("Am " + dbDiaEntry.getDate().get(Calendar.DATE) + "." + dbDiaEntry.getDate().get(Calendar.MONTH) + "." + dbDiaEntry.getDate().get(Calendar.YEAR) + " um " + dbDiaEntry.getDate().get(Calendar.HOUR) + ":" + dbDiaEntry.getDate().get(Calendar.MINUTE)));
-            }
+            timeStamp.setText(new SimpleDateFormat("d.MMM.yyyy").format(dbDiaEntry.getDate().getTime()) + " um " + new SimpleDateFormat("HH:mm").format(dbDiaEntry.getDate().getTime()));
         }
 
         // lädt Bild, falls vorhanden in die imageview um, sonst platzhalterbild
