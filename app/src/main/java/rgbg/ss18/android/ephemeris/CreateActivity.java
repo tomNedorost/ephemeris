@@ -61,6 +61,7 @@ public class CreateActivity extends AppCompatActivity {
     private FloatingActionButton createBtn;
     private ImageButton selectImage, findLocation, selectMood;
     private ImageView imageView;
+    private int selectedMood = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +119,7 @@ public class CreateActivity extends AppCompatActivity {
     private void initBtn() {
         // Buttons instanziieren
         selectImage = findViewById(R.id.selectImageBtn);
-        selectMood =findViewById(R.id.imageButton_moodSelect);
+        selectMood = findViewById(R.id.imageButton_moodSelect);
         findLocation = findViewById(R.id.location_find_btn);
         createBtn = findViewById(R.id.createBtn);
 
@@ -136,7 +137,7 @@ public class CreateActivity extends AppCompatActivity {
         selectMood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showMoodSelectDialog(v);
             }
         });
 
@@ -170,6 +171,8 @@ public class CreateActivity extends AppCompatActivity {
                 if (city.getText().toString() != null) {
                     newDiaEntry.setCity(city.getText().toString());
                 }
+
+
                 // Verbindung zur DB aufbauen
                 DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
 
@@ -186,38 +189,49 @@ public class CreateActivity extends AppCompatActivity {
     }
 
 
-    // ToDo: finish MoodArrayAdapter + case selection
+    // ToDo: Verändert nicht den imageButton nach Auswahl.
     public void showMoodSelectDialog(View view){
+        final String [] moodNames = new String[] {"Sehr Unzufrieden", "Unzufrieden", "Neutral", "Zufrieden", "Sehr Zufrieden" };
+        final Integer [] moodDrawables =  new Integer[] {R.drawable.ic_sentiment_1_very_dissatisfied_black_24dp, R.drawable.ic_sentiment_2_dissatisfied_black_24dp, R.drawable.ic_sentiment_3_neutral_black_24dp, R.drawable.ic_sentiment_4_satisfied_black_24dp, R.drawable.ic_sentiment_5_very_satisfied_black_24dp};
+        ListAdapter moodAdapter = new MoodArrayAdapter(this, moodNames, moodDrawables );
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        ListAdapter moodAdapter = new MoodArrayAdapter(this, R.array.mood_array);
-
         mBuilder.setTitle(R.string.moodSelect_text);
-      //  int itemSelected = 4;
-       // mBuilder.setSingleChoiceItems
         mBuilder.setAdapter(moodAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int moodNr) {
+               Toast.makeText(CreateActivity.this, "Stimmung ausgewählt: " + moodNames[moodNr], Toast.LENGTH_SHORT).show();
                 switch (moodNr) {
-                    // very disappointed
+
+                        // very disappointed
                     case 0:
+                        selectMood.setImageResource(R.drawable.ic_sentiment_1_very_dissatisfied_black_24dp);
+                        selectedMood = 1;
 
                         // disappointed
                     case 1:
+                        selectMood.setImageResource(R.drawable.ic_sentiment_2_dissatisfied_black_24dp);
+                        selectedMood = 2;
 
                         // neutral
                     case 2:
+                        selectMood.setImageResource(R.drawable.ic_sentiment_3_neutral_black_24dp);
+                        selectedMood = 3;
 
                         // satisfied
                     case 3:
+                        selectMood.setImageResource(R.drawable.ic_sentiment_4_satisfied_black_24dp);
+                        selectedMood = 4;
 
                         // very satisfied
                     case 4:
-
+                        selectMood.setImageResource(R.drawable.ic_sentiment_5_very_satisfied_black_24dp);
+                        selectedMood = 5;
                 }
             }
         });
         AlertDialog moodDialog = mBuilder.create();
+
         moodDialog.show();
     }
 
