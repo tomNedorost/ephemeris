@@ -92,7 +92,33 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         //lädt Mood, falls vorhanden, ansonsten platzhaltermood
+        switch (dbDiaEntry.getMood()) {
 
+            // very disappointed
+            case 1:
+                mood.setImageResource(R.drawable.ic_sentiment_1_very_dissatisfied_black_24dp);
+                break;
+
+            // disappointed
+            case 2:
+                mood.setImageResource(R.drawable.ic_sentiment_2_dissatisfied_black_24dp);
+                break;
+
+            // neutral
+            case 3:
+                mood.setImageResource(R.drawable.ic_sentiment_3_neutral_black_24dp);
+                break;
+
+            // satisfied
+            case 4:
+                mood.setImageResource(R.drawable.ic_sentiment_4_satisfied_black_24dp);
+                break;
+
+            // very satisfied
+            case 5:
+                mood.setImageResource(R.drawable.ic_sentiment_5_very_satisfied_black_24dp);
+                break;
+        }
     }
 
     // Setzt die AppBar auf mitsamt Toolbar.

@@ -64,7 +64,7 @@ public class CreateActivity extends AppCompatActivity {
     private FloatingActionButton createBtn;
     private ImageButton selectImage, findLocation, selectMood;
     private ImageView imageView;
-    private int selectedMood = 5;
+    private int selectedMood = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +73,12 @@ public class CreateActivity extends AppCompatActivity {
 
         init();
 
+        initBtn();
         // wenn der Eintrag bearbeitet werden soll
         if (getIntent().getSerializableExtra(TODO_KEY) != null) {
             initWithEntry();
         }
 
-        initBtn();
     }
 
     // inits layout mit DiaEntry
@@ -108,6 +108,39 @@ public class CreateActivity extends AppCompatActivity {
         // city
         if (dbDiaEntry.getCity() != null) {
             city.setText(dbDiaEntry.getCity());
+        }
+
+        switch (dbDiaEntry.getMood()) {
+
+            // very disappointed
+            case 1:
+                selectMood.setImageResource(R.drawable.ic_sentiment_1_very_dissatisfied_black_24dp);
+                selectedMood = 1;
+                break;
+
+            // disappointed
+            case 2:
+                selectMood.setImageResource(R.drawable.ic_sentiment_2_dissatisfied_black_24dp);
+                selectedMood = 2;
+                break;
+
+            // neutral
+            case 3:
+                selectMood.setImageResource(R.drawable.ic_sentiment_3_neutral_black_24dp);
+                selectedMood = 3;
+                break;
+
+            // satisfied
+            case 4:
+                selectMood.setImageResource(R.drawable.ic_sentiment_4_satisfied_black_24dp);
+                selectedMood = 4;
+                break;
+
+            // very satisfied
+            case 5:
+                selectMood.setImageResource(R.drawable.ic_sentiment_5_very_satisfied_black_24dp);
+                selectedMood = 5;
+                break;
         }
     }
 
@@ -164,6 +197,7 @@ public class CreateActivity extends AppCompatActivity {
                 final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
 
                 newDiaEntry.setDate(Calendar.getInstance());
+                newDiaEntry.setMood(selectedMood);
                 // fügt das bild zum DiaEntry als byte[] hinzu.
                 if (imageView.getDrawable() != null) {
                     try {
@@ -214,26 +248,31 @@ public class CreateActivity extends AppCompatActivity {
                     case 0:
                         selectMood.setImageResource(R.drawable.ic_sentiment_1_very_dissatisfied_black_24dp);
                         selectedMood = 1;
+                        break;
 
                         // disappointed
                     case 1:
                         selectMood.setImageResource(R.drawable.ic_sentiment_2_dissatisfied_black_24dp);
                         selectedMood = 2;
+                        break;
 
                         // neutral
                     case 2:
                         selectMood.setImageResource(R.drawable.ic_sentiment_3_neutral_black_24dp);
                         selectedMood = 3;
+                        break;
 
                         // satisfied
                     case 3:
                         selectMood.setImageResource(R.drawable.ic_sentiment_4_satisfied_black_24dp);
                         selectedMood = 4;
+                        break;
 
                         // very satisfied
                     case 4:
                         selectMood.setImageResource(R.drawable.ic_sentiment_5_very_satisfied_black_24dp);
                         selectedMood = 5;
+                        break;
                 }
             }
         });
