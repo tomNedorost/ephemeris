@@ -33,15 +33,12 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        //setting up toolbar
-        Toolbar searchToolbar = findViewById(R.id.search_toolbar);
-        setSupportActionBar(searchToolbar);
-        setUpReturnArrow();
-
         // inits all needed things
+        initAppBar();
         initUi();
         initBtn();
         initListView();
+
     }
 
     // siehe MainActivity
@@ -92,14 +89,15 @@ public class SearchActivity extends AppCompatActivity {
         searchListView = findViewById(R.id.search_list_view);
     }
 
-    //inflates toolbar menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.search_menu, menu);
 
-        return true;
+    // Sets up all members of the AppBar
+    public void initAppBar(){
+        //setting up toolbar
+        Toolbar searchToolbar = findViewById(R.id.search_toolbar);
+        setSupportActionBar(searchToolbar);
+
+        setUpReturnArrow();
     }
-
 
     public void setUpReturnArrow (){
         ActionBar searchActionBar = getSupportActionBar();
@@ -108,6 +106,16 @@ public class SearchActivity extends AppCompatActivity {
             searchActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
+    // Inflates toolbar menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        return true;
+    }
+
+
 
     // Handles Toolbar Selection.
     @Override

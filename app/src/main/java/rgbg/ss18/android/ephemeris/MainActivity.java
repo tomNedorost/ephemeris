@@ -1,8 +1,22 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,11 +24,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
-import java.util.Random;
+
 
 import rgbg.ss18.android.ephemeris.adapter.DiaEntryOverviewListAdapter;
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
@@ -27,18 +41,24 @@ public class MainActivity extends AppCompatActivity {
     private List<DiaEntry> dataSource;
     private DiaEntryOverviewListAdapter adapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Sets up the toolbar.
-        Toolbar mainToolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(mainToolbar);
-
+        // needed for API 26+. Should be called first
+       // ReminderNotification.createNotificationChannel();
         initListView();
         initButtons();
-        // setDefaultPreferences();
+        initAppBar();
+        initSettings();
+    }
+
+    // Sets up the toolbar
+    private void initAppBar(){
+        Toolbar mainToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mainToolbar);
     }
 
     // Inflates toolbar menu.
@@ -69,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
 
                 return true;
+
             case R.id.clearAllBtn:
 
                 DiaEntryDatabase db = DiaEntryDatabase.getInstance(MainActivity.this);
@@ -85,11 +106,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    Sets the default preferences for Settings
+    // Sets the default preferences for Settings
   private void setDefaultPreferences (){
-        PreferenceManager.setDefaultValues(this,R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
+    // init Settings
+    private void initSettings () {
+        setDefaultPreferences();
+        SharedPreferences reminderSharedPref =  PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Sets Notification according to Settings
+        if(reminderSharedPref.getBoolean(SettingsActivity.KEY_PREF_REMINDER, true))
+            ReminderNotification.setUpReminder(MainActivity.this, NotificationReceiver.class, reminderSharedPref.getString(SettingsActivity.KEY_PREF_REMINDER_TIME,"12:00"));
+
+    }
 
     // refresht die ListView immer wenn diese Activity angezeigt wird
     @Override

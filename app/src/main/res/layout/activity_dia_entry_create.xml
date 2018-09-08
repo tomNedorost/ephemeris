@@ -39,25 +39,25 @@
         android:id="@+id/createDiaEntryDescEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="top|left"
         android:hint="@string/diaEntryDescEditTextHint"
         android:inputType="textMultiLine"
         android:lines="10"
         android:minLines="6"
-        app:layout_constraintTop_toBottomOf="@+id/location_input" />
+        app:layout_constraintTop_toBottomOf="@+id/location_find_btn" />
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="417dp"
-        android:layout_height="176dp"
+        android:layout_height="174dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createDiaEntryTitleEditText" />
 
@@ -79,6 +79,33 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+    <!--Mood select Text-->
+    <TextView
+        android:id="@+id/textView_moodSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/moodSelect_text"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/location_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <!--Mood select-->
+    <ImageButton
+        android:id="@+id/imageButton_moodSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_sentiment_5_very_satisfied_black_24dp" />
+
     <ImageButton
         android:id="@+id/location_find_btn"
         android:layout_width="50dp"
@@ -89,19 +116,19 @@
         android:background="@color/colorPrimary"
         android:src="@drawable/baseline_location_on_black_18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_moodSelect" />
 
     <EditText
         android:id="@+id/location_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/location_input"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/location_find_btn"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_moodSelect" />
 
 </android.support.constraint.ConstraintLayout>
