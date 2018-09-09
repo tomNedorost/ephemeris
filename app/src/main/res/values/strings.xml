@@ -42,18 +42,16 @@
 
     <!-- Strings related to Settings & Preferences -->
     <string name="settings_activity_title">Einstellungen</string>
+
     <string name="pref_reminder_notifications">Erinnerungen</string>
     <string name="pref_reminder_notifications_summary">Werde täglich um 20 Uhr daran erinnert einen Tagebucheintrag zu erstellen.</string>
     <string name="pref_reminder_notifications_vibrate">Vibration</string>
     <string name="pref_reminder_notifications_ringtone">Klingeltöne</string>
     <string name="pref_reminder_notifications_ringtone_silent">Stumm</string>
     <string name="pref_reminder_notifications_time">Uhrzeit</string>
-    <!--ToDo: No usages ?-->
     <string name="pref_reminder_notifications_time_set">OK</string>
     <string name="pref_reminder_notifications_time_cancel">Abbrechen</string>
 
-    <!-- Strings related to Map. -->
-    <string name="map_activity_title">Karte</string>
 
     <!-- Strings related to Reminder Notification. -->
     <string name="reminder_notification_title">Tagebuch Errinnerung.</string>
@@ -61,7 +59,7 @@
     <string name="reminder_notification_channel_name">reminder</string>
     <string name="reminder_notification_channel_description">This is the Reminder Notification</string>
     <string name="channel_name">ephemerisNotification</string>
-    <string name="channel_description">some Text</string>
+    <string name="channel_description">Reminder</string>
     <string name="werde">Werde</string>
 
 </resources>

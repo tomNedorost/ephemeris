@@ -6,6 +6,15 @@
     tools:context=".SettingsActivity"
     android:orientation="vertical">
 
+
+    <TextView
+        android:id="@+id/settings_textView_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/pref_reminder_notifications"
+        android:textSize="24sp" />
+
     <Switch
         android:layout_margin="10dp"
         android:id="@+id/notificationEnabledSwitch"
