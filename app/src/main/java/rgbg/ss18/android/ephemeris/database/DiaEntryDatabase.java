@@ -18,9 +18,8 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 public class DiaEntryDatabase extends SQLiteOpenHelper{
     public static DiaEntryDatabase INSTANCE = null;
 
-    // ToDo: Version ändern, wenn neue Column hinzugefügt wurde
     private static final String DB_NAME = "DIARYENTRIES";
-    private static final int VERSION = 18;
+    private static final int VERSION = 20;
     private static final String TABLE_NAME = "diaryentries";
     public static final String ID_COL = "ID";
     public static final String NAME_COL = "name";
@@ -29,15 +28,14 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
     public static final String DESC_COL = "description";
     public static final String IMG_COL = "image";
     public static final String CITY_COL = "city";
-    // ToDo: neue Column hier nennen
 
-    // Todo: neue Col hier hinzufügen
     private String[] ALL_COLS = {ID_COL, NAME_COL, DATE_COL, MOOD_COL, DESC_COL, IMG_COL, CITY_COL};
 
     private DiaEntryDatabase(Context context) {
         super(context, DB_NAME, null, VERSION);
     }
 
+    // Erstellt eine Instance, wenn nicht vorhanden, damit man auf die DB zugreifen kann
     public static DiaEntryDatabase getInstance (final Context context) {
         if (INSTANCE == null) {
             INSTANCE = new DiaEntryDatabase(context);
@@ -45,7 +43,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         return INSTANCE;
     }
 
-    // ToDo: neue Columns/Felder hier hinzufügen
+    // Erstellt den Table für DB
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createQuery = "CREATE TABLE " + TABLE_NAME + " ("
@@ -68,8 +66,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    // ToDo: mit value.put den Wert der neuen Columns hier hinzufügen
-    // Erstellt einen neuen DiaEntry in der DB mit Hilfe eines DiaEntries
+    // creates new DiaEntry
     public boolean createEntry(final DiaEntry diaEntry){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -92,8 +89,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         }
     }
 
-    // ToDo: diaEntry richtig mit allen Cols beschreiben
-    // Liest einen DiaEntry aus der DB mit hilfe der ID
+    // return a DiaEntry by id
     public DiaEntry getDiaEntry(final long id) {
         SQLiteDatabase db =  this.getReadableDatabase();
 
@@ -127,7 +123,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         return diaEntry;
     }
 
-    // Gibt eine Liste mit allen DiaEntries Namen und Datum zurück.
+    // returns list of all DiaEntries
     public List<DiaEntry> getAllDiaEntries() {
         List<DiaEntry> diaEntries = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -147,7 +143,6 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
                 }
 
                 diaEntry.setDate(calendar);
-                // ToDO: Date hinzufügen, damit man es in der ListView anzeigen kann.
                 if (diaEntry != null) {
                     diaEntries.add(diaEntry);
                 }
@@ -159,8 +154,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         return diaEntries;
     }
 
-    // ToDo: alle Cols updaten
-    // Updated einen bestehenden DiaEntry, welcher übergeben werden muss.
+    // updates an DiaEntry. currently not needed, because we first delete an Dia Entry and then save a new one, when clicking the save button
     public DiaEntry updateDiaEntry(final DiaEntry diaEntry) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -180,6 +174,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         return this.getDiaEntry(diaEntry.getId());
     }
 
+    // delete only selected diaEntry
     public void deleteDiaEntry(final DiaEntry diaEntry) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -188,6 +183,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         db.close();
     }
 
+    // delete all Entries
     public void deleteAllDiaEntries() {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -196,6 +192,7 @@ public class DiaEntryDatabase extends SQLiteOpenHelper{
         db.close();
     }
 
+    // returns list of diaEntries, where the search String is either in title or description
     public List<DiaEntry> searchFor(String search) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<DiaEntry> diaEntries = new ArrayList<>();

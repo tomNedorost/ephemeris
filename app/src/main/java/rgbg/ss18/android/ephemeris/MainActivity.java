@@ -1,7 +1,10 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -22,23 +26,38 @@ import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String CHANNEL_ID = "ephNotification";
     private FloatingActionButton createBtn;
     private ListView diaListView;
     private List<DiaEntry> dataSource;
     private EntryOverviewListAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // needed for API 26+. Should be called first
-       // ReminderNotification.createNotificationChannel();
+        createNotificationChannel();
         initListView();
         initButtons();
         initAppBar();
-        initSettings();
+    }
+
+    // see: https://developer.android.com/guide/topics/ui/notifiers/notifications
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     // Sets up the toolbar
@@ -93,35 +112,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Sets the default preferences for Settings
-  /* private void setDefaultPreferences (){
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-    }
-*/
-    // init Settings
-    private void initSettings () {
-       // setDefaultPreferences();
-        SharedPreferences reminderSharedPref =  PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Sets Notification according to Settings
-        if(reminderSharedPref.getBoolean(SettingsActivity.KEY_PREF_REMINDER, true))
-            ReminderNotification.setUpReminder(MainActivity.this, NotificationReceiver.class, reminderSharedPref.getString(SettingsActivity.KEY_PREF_REMINDER_TIME,"12:00"));
-
-    }
-
-    // refresht die ListView immer wenn diese Activity angezeigt wird
+    // refreshes Listview on resume
     @Override
     protected void onResume() {
         super.onResume();
         refreshListView();
     }
 
+    // inits create Button
     private void initButtons() {
         createBtn = findViewById(R.id.createBtn);
 
         setOnClickListener();
     }
 
+    // sets onClickListener for create Button
     private void setOnClickListener() {
         if (createBtn != null) {
             createBtn.setOnClickListener(new View.OnClickListener() {
@@ -134,17 +139,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
+    // inits Listview and connects it to the adapter
     private void initListView() {
         this.diaListView = findViewById(R.id.diaListView);
         this.dataSource = DiaEntryDatabase.getInstance(this).getAllDiaEntries();
         this.adapter = new EntryOverviewListAdapter(this, dataSource);
         diaListView.setAdapter(adapter);
 
-        // ToDo: zur edit activity weiterleiten, dies funtkioniert ähnlich wie die createEntry Methode, nur mit der updateEntry Methode
         this.diaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    // refreshes ListView by clearing it and get all DiaEntries from DB
     public void refreshListView() {
         dataSource.clear();
         dataSource.addAll(DiaEntryDatabase.getInstance(this).getAllDiaEntries());

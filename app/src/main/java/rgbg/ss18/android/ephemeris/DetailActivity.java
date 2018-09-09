@@ -82,7 +82,6 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         // schreibt City, falls vorhanden in die location textview, sonst nichts
-        // ToDo überlegen ob wir eine standard, oder fakestadt hinschreiben
         if (dbDiaEntry.getCity() != null) {
             location.setText(dbDiaEntry.getCity());
         }

@@ -43,7 +43,7 @@
     <!-- Strings related to Settings & Preferences -->
     <string name="settings_activity_title">Einstellungen</string>
     <string name="pref_reminder_notifications">Erinnerungen</string>
-    <string name="pref_reminder_notifications_summary">Werde täglich zu deiner gewählten Uhrzeit daran erinnert einen Tagebucheintrag zu erstellen.</string>
+    <string name="pref_reminder_notifications_summary">Werde täglich um 20 Uhr daran erinnert einen Tagebucheintrag zu erstellen.</string>
     <string name="pref_reminder_notifications_vibrate">Vibration</string>
     <string name="pref_reminder_notifications_ringtone">Klingeltöne</string>
     <string name="pref_reminder_notifications_ringtone_silent">Stumm</string>
@@ -60,5 +60,8 @@
     <string name="reminder_notification_text">Erstelle jetzt einen neuen Tagebucheintrag!</string>
     <string name="reminder_notification_channel_name">reminder</string>
     <string name="reminder_notification_channel_description">This is the Reminder Notification</string>
+    <string name="channel_name">ephemerisNotification</string>
+    <string name="channel_description">some Text</string>
+    <string name="werde">Werde</string>
 
 </resources>

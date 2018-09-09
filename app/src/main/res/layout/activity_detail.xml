@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".DetailActivity">
 
-    <!--ToDO: change text to string res-->
-
     <!--Toolbar-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/detail_toolbar"
@@ -23,7 +21,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/detail_activity_title" />
 
-    <!--Image / ToDO: Beschränkt auf 1 oder mehrere Bilder möglich?-->
+    <!--Image -->
     <ImageView
         android:id="@+id/imageView_entryImage"
         android:layout_width="match_parent"

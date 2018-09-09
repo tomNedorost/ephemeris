@@ -150,8 +150,6 @@ public class CreateActivity extends AppCompatActivity {
         selectMood = findViewById(R.id.imageButton_moodSelect);
         findLocation = findViewById(R.id.location_find_btn);
 
-
-        // ToDo: App stürzt ab wenn man kein Bild auswählt
         // onClickListener für Image auswählen setzen
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,16 +181,23 @@ public class CreateActivity extends AppCompatActivity {
 
     // Create Entry Method for Toolbar
     public void createEntry(){
-        // ToDo: wird das noch benötigit? Wenn ja wie für toolbar items umsetzten?
-        // verhindert, dass man durch schnelle drücken des Buttons mehrere Einträge erstellt.
-        //R.id.create_menu_done.setClickable(false);
 
         // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt.
-        final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
+        DiaEntry newDiaEntry;
+        if (title.getText() != null) {
+           newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
+        } else {
+            newDiaEntry = new DiaEntry("Keinen Titel ausgewählt");
+        }
 
+
+        // setzt das Datum auf die aktuelle Zeit
         newDiaEntry.setDate(Calendar.getInstance());
+
+        // setzt den Mood auf den ausgewählten mood. Standard: Sehr zufrieden.
         newDiaEntry.setMood(selectedMood);
-        // fügt das bild zum DiaEntry als byte[] hinzu.
+
+        // fügt das bild zum DiaEntry als byte[] hinzu, ist keins ausgewählt wird in der Detailansicht dann das dort hinterlegte Standardbild angezeigt.
         if (imageView.getDrawable() != null) {
             try {
                 byte[] image = imageViewToByte(imageView);
@@ -202,11 +207,12 @@ public class CreateActivity extends AppCompatActivity {
             }
         }
 
-
+        // fügt Stadt hinzu, sollte keine ausgewählt werden, wird die Stadt Traumland genannt.
         if (city.getText().toString() != null) {
             newDiaEntry.setCity(city.getText().toString());
+        } else {
+            newDiaEntry.setCity("Traumland");
         }
-
 
         // Verbindung zur DB aufbauen
         DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
@@ -218,12 +224,11 @@ public class CreateActivity extends AppCompatActivity {
         db.close();
 
         // Activity schließen,  Toast für erfolgreiche speicherung
-        Toast.makeText(this, R.string.create_entrySaved, Toast.LENGTH_SHORT);
+        Toast.makeText(this, R.string.create_entrySaved, Toast.LENGTH_SHORT).show();
         finish();
     }
 
 
-    // ToDo: Verändert nicht den imageButton nach Auswahl.
     public void showMoodSelectDialog(View view){
         final String [] moodNames = new String[] {"Sehr Unzufrieden", "Unzufrieden", "Neutral", "Zufrieden", "Sehr Zufrieden" };
         final Integer [] moodDrawables =  new Integer[] {R.drawable.ic_sentiment_1_very_dissatisfied_black_24dp, R.drawable.ic_sentiment_2_dissatisfied_black_24dp, R.drawable.ic_sentiment_3_neutral_black_24dp, R.drawable.ic_sentiment_4_satisfied_black_24dp, R.drawable.ic_sentiment_5_very_satisfied_black_24dp};
@@ -275,7 +280,7 @@ public class CreateActivity extends AppCompatActivity {
     }
 
 
-    // verwandelt das Bild in eine byte[], welche in einem DiaEntry und anschließend in der DB gespeichert werden kann
+    // Creates byte[] suitable for DiaEntry
     private byte[] imageViewToByte(ImageView imageView) throws IOException {
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -285,7 +290,7 @@ public class CreateActivity extends AppCompatActivity {
         return byteArray;
     }
 
-    // erfragt ob die Erlaubnis erteilt worde ist, auf die Gallery zuzugreifen.
+    // checks for permission to access Gallery or Location
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -317,10 +322,9 @@ public class CreateActivity extends AppCompatActivity {
 
     }
 
-    // verwandelt das Bild in eine bitmap, die wir in unsere DB speichern können
+    // Uses CropImage to get Image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // überprüft, ob ein Bild ausgewählt wurde
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
@@ -328,43 +332,24 @@ public class CreateActivity extends AppCompatActivity {
                 imageView.setImageURI(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+                Log.e("ERROR", error.toString());
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // verkleinert das bild auf die maxSize
-    private Bitmap getResizedBitmap(Bitmap bitmap, int maxSize) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        float bitmapRatio = (float) width / (float) height;
-
-        if (bitmapRatio > 1) {
-            width = maxSize;
-            height = (int) (width / bitmapRatio);
-        } else {
-            height = maxSize;
-            width = (int) (height * bitmapRatio);
-        }
-
-        return Bitmap.createScaledBitmap(bitmap, width, height, true);
-    }
-
-    // holt sich den Stadtnamen anhand der long und latitude
+    // gets City name from Geocoder, if it fails it will set to default City Name
     private String getCity(double lat, double lon) {
         String city = new String();
 
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> adresses;
         try{
-            adresses = geocoder.getFromLocation(lat, lon, 2);
-            for (Address address : adresses) {
-                Log.e("Address", address.getLocality());
-            }
+            adresses = geocoder.getFromLocation(lat, lon, 1);
             city = adresses.get(0).getLocality();
         } catch (IOException e) {
             e.printStackTrace();
-            city = "FAILURE";
+            city = "Traumland";
         }
 
         return city;
@@ -401,7 +386,7 @@ public class CreateActivity extends AppCompatActivity {
 
             // Save Entry into Database
             case R.id.create_menu_done:
-
+                item.setVisible(false);
                 createEntry();
 
                 return true;

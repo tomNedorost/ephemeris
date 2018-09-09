@@ -1,89 +1,82 @@
 package rgbg.ss18.android.ephemeris;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.support.v7.app.ActionBar;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
+import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
-public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-    public static final String KEY_PREF_REMINDER = "reminder_notification";
-    public static final String KEY_PREF_REMINDER_VIBRATE = "reminder_notification_vibrate";
-    public static final String KEY_PREF_REMINDER_TIME = "reminder_notification_time";
-    public SharedPreferences reminderSharedPref;
-    public SharedPreferences.OnSharedPreferenceChangeListener listener;
+public class SettingsActivity extends AppCompatActivity {
+    public final static int NOTIFICATION_REQUEST_CODE = 200;
+    public final static String SWITCH_IS_ENABLED = "SwitchEnabled";
+    public final static String SHARED_PREFERENCES = "rgbg.ss18.android.ephemeris";
+
+    Switch notificationEnabledSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
 
-        // Sets SettingsFragment as main content for SettingsActivity
-        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
-
-        // Sets SharedPrefs
-        reminderSharedPref =  PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Sets SharedPrefsListener ToDo: ohne doppelte implemtierung von onSharedPreferenceChanged lösen ; ?
-        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                switch(key) {
-
-                    // Activate or Deactivate the Notification with/without vibrate and chosen time
-                    case KEY_PREF_REMINDER  :
-                    case KEY_PREF_REMINDER_VIBRATE:
-                    case KEY_PREF_REMINDER_TIME:
-                        if (reminderSharedPref.getBoolean(KEY_PREF_REMINDER, true)) {
-                            ReminderNotification.setUpReminder(SettingsActivity.this, NotificationReceiver.class, reminderSharedPref.getString(KEY_PREF_REMINDER_TIME,"12:00"));
-                        } else ReminderNotification.cancelReminder(SettingsActivity.this, NotificationReceiver.class );
-
-                    default:
-                 }
-              }
-          };
-        reminderSharedPref.registerOnSharedPreferenceChangeListener(listener);
-        }
-
-
-
-
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch(key) {
-
-            // Activate or Deactivate the Notification with/without vibrate and chosen time
-            case KEY_PREF_REMINDER  :
-            case KEY_PREF_REMINDER_VIBRATE:
-            case KEY_PREF_REMINDER_TIME:
-                if (reminderSharedPref.getBoolean(KEY_PREF_REMINDER, true)) {
-                    ReminderNotification.setUpReminder(SettingsActivity.this, NotificationReceiver.class, reminderSharedPref.getString(KEY_PREF_REMINDER_TIME,"12:00"));
-                } else ReminderNotification.cancelReminder(SettingsActivity.this, NotificationReceiver.class );
-
-            default:
-        }
+        initUi();
+        loadPreferences();
     }
 
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        reminderSharedPref.registerOnSharedPreferenceChangeListener(this);
+    // checks if switch Button is clicked, or not, by loading sharedpreferences
+    private void loadPreferences() {
+        SharedPreferences sharedPrefs = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        notificationEnabledSwitch.setChecked(sharedPrefs.getBoolean(SWITCH_IS_ENABLED, false));
     }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        reminderSharedPref.unregisterOnSharedPreferenceChangeListener(this);
+    // init Switchbutton and creates pending intent when switch is on, or cancels pending intent if switch is off. Also saves the state to sharedprefs
+    // Because def Value of shared preferences is false, and this is a on change listener there will always be a pending Intent, that can be cancelled
+    private void initUi() {
+
+        notificationEnabledSwitch = findViewById(R.id.notificationEnabledSwitch);
+
+        notificationEnabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                PendingIntent pendingIntent;
+
+                // switch on == true, switch off == false
+                if (isChecked) {
+                    SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE).edit();
+                    editor.putBoolean(SWITCH_IS_ENABLED, true);
+                    editor.commit();
+
+                    Calendar calendar = Calendar.getInstance();
+
+                    calendar.set(Calendar.HOUR_OF_DAY, 20);
+                    calendar.set(Calendar.MINUTE, 0);
+
+                    String notificationTime = new SimpleDateFormat("HH:mm").format(calendar.getTime());
+                    Toast.makeText(getApplicationContext(), "Du wirst täglich um " + notificationTime + " erinnert.", Toast.LENGTH_SHORT).show();
+
+                    pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                } else {
+                    PendingIntent.getBroadcast(getApplicationContext(), NOTIFICATION_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+                    Toast.makeText(getApplicationContext(), "Du wirst nicht mehr erinnert.", Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences.Editor editor = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE).edit();
+                    editor.putBoolean(SWITCH_IS_ENABLED, false);
+                    editor.commit();
+                }
+            }
+        });
     }
-
-
 }

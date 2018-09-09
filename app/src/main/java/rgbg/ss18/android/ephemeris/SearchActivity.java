@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // inits all needed things
         initAppBar();
         initUi();
         initBtn();
@@ -40,14 +40,13 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    // siehe MainActivity
+    // same procedure in MainActivity
     private void initListView() {
         searchListView = findViewById(R.id.search_list_view);
         diaEntries = DiaEntryDatabase.getInstance(this).getAllDiaEntries();
         adapter = new EntryOverviewListAdapter(this, diaEntries);
         searchListView.setAdapter(adapter);
 
-        // ToDo: zur edit activity weiterleiten, dies funtkioniert ähnlich wie die createEntry Methode, nur mit der updateEntry Methode
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,17 +64,18 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    // sets onCicklistener for searchButton
     private void initBtn() {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchString = searchText.getText().toString();
                 DiaEntryDatabase db = DiaEntryDatabase.getInstance(SearchActivity.this);
-
+                List<DiaEntry> dbDiaEntries = db.searchFor(searchString);
                 diaEntries.clear();
-                diaEntries.addAll(db.searchFor(searchString));
-                adapter.notifyDataSetChanged();
+                diaEntries.addAll(dbDiaEntries);
 
+                adapter.notifyDataSetChanged();
                 searchText.getText().clear();
                 db.close();
             }

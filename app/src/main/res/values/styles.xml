@@ -1,6 +1,4 @@
 <resources>
-    <!--ToDo: Manage Themes : color, ActionBar, ect.-->
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Color. -->

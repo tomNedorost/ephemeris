@@ -20,6 +20,7 @@ public class EntryOverviewListAdapter extends ArrayAdapter<DiaEntry>{
         super(context, 0, objects);
     }
 
+    // Writes the textViews with given params
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

@@ -3,10 +3,8 @@ package rgbg.ss18.android.ephemeris.model;
 import java.io.Serializable;
 import java.util.Calendar;
 
-// Aufbau eines DiaEntries. Dieser besteht aus:
-// Id, Namen, Datum, Mood, Beschreibung
+
 public class DiaEntry implements Serializable {
-    // ToDo: Eigenschaft hinzufügen (Variable, Konstruktor, get, set)
     private long id;
     private String name;
     private Calendar date;
@@ -15,7 +13,7 @@ public class DiaEntry implements Serializable {
     private byte[] image;
     private String city;
 
-    // Konstruktor, der alle Eigenschaften eines DiaEntries beschreibt
+    // backup Constructor
     public DiaEntry(String name, Calendar date, int mood, String description, byte[] image, String city) {
         this.name = name;
         this.date = date;
