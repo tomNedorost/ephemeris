@@ -7,8 +7,6 @@
 
     <!-- Strings related to Detail. -->
     <string name="detail_activity_title">Detail Ansicht</string>
-    <!--ToDo: No usages-->
-    <string name="detail_textView_title">Titel</string>
     <string name="detail_textView_testTime">Am 1.1.2018 um 13:37</string>
     <string name="detail_textView_testLocation">Regensburg</string>
     <string name="detail_textView_testText">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
@@ -20,12 +18,8 @@
     <string name="create_activity_title">Eintrag bearbeiten</string>
     <string name="create_editTextHint_title">Gib den Titel deines Eintrages ein!</string>
     <string name="create_editTextHint_entryDesc">Was ist heute so passiert?</string>
-    <!--ToDo: No usages-->
-    <string name="create_textView_selectImage">Wähle ein Bild aus.</string>
     <string name="create_editText_location">Gib den Ort ein.</string>
-    <string name="create_imageButton_locationFinder">Ort finden</string>
     <string name="create_textView_moodSelect">Wie ist deine aktuelle Stimmung?</string>
-    <!--ToDo: No usages-->
     <string name="create_entrySaved">Eintrag gespeichert!</string>
 
 
@@ -33,7 +27,6 @@
     <string name="toolbar_edit">Eintrag bearbeiten</string>
     <string name="toolbar_clearAll">Alle Einträge löschen</string>
     <string name="toolbar_clearThis">Eintrag löschen</string>
-    <string name="toolbar_done">Eintrag speichern</string>
 
     <!-- Strings related to Search. -->
     <string name="search_activity_title">Suche</string>
@@ -45,21 +38,10 @@
 
     <string name="pref_reminder_notifications">Erinnerungen</string>
     <string name="pref_reminder_notifications_summary">Werde täglich um 20 Uhr daran erinnert einen Tagebucheintrag zu erstellen.</string>
-    <string name="pref_reminder_notifications_vibrate">Vibration</string>
-    <string name="pref_reminder_notifications_ringtone">Klingeltöne</string>
-    <string name="pref_reminder_notifications_ringtone_silent">Stumm</string>
-    <string name="pref_reminder_notifications_time">Uhrzeit</string>
-    <string name="pref_reminder_notifications_time_set">OK</string>
-    <string name="pref_reminder_notifications_time_cancel">Abbrechen</string>
 
 
     <!-- Strings related to Reminder Notification. -->
-    <string name="reminder_notification_title">Tagebuch Errinnerung.</string>
-    <string name="reminder_notification_text">Erstelle jetzt einen neuen Tagebucheintrag!</string>
-    <string name="reminder_notification_channel_name">reminder</string>
-    <string name="reminder_notification_channel_description">This is the Reminder Notification</string>
     <string name="channel_name">ephemerisNotification</string>
     <string name="channel_description">Reminder</string>
-    <string name="werde">Werde</string>
 
 </resources>

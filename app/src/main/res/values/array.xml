@@ -2,11 +2,4 @@
 <resources>
 
     <!--moodDrawables array-->
-    <array name="mood_array">
-        <item>@drawable/ic_sentiment_1_very_dissatisfied_black_24dp</item>
-        <item>@drawable/ic_sentiment_2_dissatisfied_black_24dp</item>
-        <item>@drawable/ic_sentiment_3_neutral_black_24dp</item>
-        <item>@drawable/ic_sentiment_4_satisfied_black_24dp</item>
-        <item>@drawable/ic_sentiment_5_very_satisfied_black_24dp</item>
-    </array>
 </resources>

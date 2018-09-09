@@ -18,11 +18,5 @@
     </style>
 
     <!-- TimePicker theme. -->
-    <style name="TimePickerTheme">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
-    </style>
 
 </resources>

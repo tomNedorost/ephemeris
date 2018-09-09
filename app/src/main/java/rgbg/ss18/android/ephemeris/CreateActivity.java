@@ -48,7 +48,6 @@ import static rgbg.ss18.android.ephemeris.DetailActivity.TODO_KEY;
 
 public class CreateActivity extends AppCompatActivity {
 
-    // ToDo: Abfangen, wenn Standord nicht aktiv ist (aktuell App absturz)
     private static final int REQUEST_CODE_GALLERY = 999;
     private static final int REQUEST_CODE_LOCATION = 1000;
 
