@@ -29,8 +29,8 @@ public class NotificationReceiver extends BroadcastReceiver{
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.baseline_add_black_18dp)
-                .setContentTitle(Resources.getSystem().getString(R.string.reminder_notification_title))
-                .setContentText(Resources.getSystem().getString(R.string.reminder_notification_text))
+                .setContentTitle("Ephemeris")
+                .setContentText("Erstelle jetzt deinen Tagebuch Eintrag")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
