@@ -25,7 +25,4 @@
         android:title="@string/pref_reminder_notifications_time"
         />
 
-
-
-
 </android.support.v7.preference.PreferenceScreen>

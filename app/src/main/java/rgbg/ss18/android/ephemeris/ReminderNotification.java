@@ -61,7 +61,7 @@ public class ReminderNotification {
         PendingIntent reminderAlarmPendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_CODE, reminderAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager reminderAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
-        reminderAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, reminderAlarmPendingIntent);
+        reminderAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, reminderAlarmPendingIntent);
 
     }
 

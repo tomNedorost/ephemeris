@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.view.Menu;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
@@ -58,7 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         entryText = findViewById(R.id.textView_entryText);
         imageView = findViewById(R.id.imageView_entryImage);
         location = findViewById(R.id.textView_location);
-        toolbar = findViewById(R.id.dia_entry_detail_toolbar);
+        toolbar = findViewById(R.id.detail_toolbar);
         mood = findViewById(R.id.imageView_mood);
 
         setUpAppBar();
@@ -121,20 +120,20 @@ public class DetailActivity extends AppCompatActivity {
     // Setzt die AppBar auf mitsamt Toolbar.
     public void setUpAppBar (){
         // setzt die Toolbar auf
-        Toolbar diaEntryDetailToolbar = findViewById(R.id.dia_entry_detail_toolbar);
+        Toolbar diaEntryDetailToolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(diaEntryDetailToolbar);
 
-        ActionBar searchActionBar = getSupportActionBar();
+        ActionBar detailActionBar = getSupportActionBar();
 
-        if(searchActionBar != null){
-            searchActionBar.setDisplayHomeAsUpEnabled(true);
+        if(detailActionBar != null){
+            detailActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
     // Inflates toolbar menu.
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.dia_entry_detail_menu, menu);
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
 
         return true;
     }

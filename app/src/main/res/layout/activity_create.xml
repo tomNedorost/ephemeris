@@ -8,43 +8,46 @@
     tools:context=".CreateActivity">
 
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent">
+    <!--Toolbar-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/create_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/create_activity_title" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/createBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="7dp"
-            android:scaleType="center"
-            android:src="@drawable/baseline_done_black_18dp" />
-    </FrameLayout>
-
+    <!--Title-->
     <EditText
-        android:id="@+id/createDiaEntryTitleEditText"
+        android:id="@+id/create_editText_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:hint="@string/create_editTextHint_title"
         android:maxLength="20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/create_toolbar" />
 
+    <!--Entry-->
     <EditText
-        android:id="@+id/createDiaEntryDescEditText"
+        android:id="@+id/create_editText_entryDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:gravity="top|left"
-        android:hint="@string/create_editTextHint_desc"
+        android:hint="@string/create_editTextHint_entryDesc"
         android:inputType="textMultiLine"
         android:lines="10"
         android:minLines="6"
@@ -52,21 +55,17 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/create_imageView_mainImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createDiaEntryTitleEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/create_editText_title" />
 
 
     <ImageButton
-        android:id="@+id/selectImageBtn"
+        android:id="@+id/create_imageButton_selectImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -75,12 +74,12 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:src="@drawable/baseline_add_photo_alternate_black_18dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        android:background="@drawable/shape_buttons_drawable"
+        app:srcCompat="@drawable/ic_add_a_photo_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/create_imageView_mainImage"
+        app:layout_constraintEnd_toEndOf="@+id/create_imageView_mainImage"
+        app:layout_constraintStart_toStartOf="@+id/create_imageView_mainImage"
+        app:layout_constraintTop_toTopOf="@+id/create_imageView_mainImage" />
 
     <!--Mood select Text-->
     <TextView
@@ -95,7 +94,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/location_input"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/create_imageView_mainImage" />
 
     <!--Mood select-->
     <ImageButton
@@ -107,7 +106,7 @@
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/create_imageView_mainImage"
         app:srcCompat="@drawable/ic_sentiment_5_very_satisfied_black_24dp" />
 
     <ImageButton

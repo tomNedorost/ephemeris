@@ -10,8 +10,9 @@
 
     <item
         android:id="@+id/edit_entry"
+        android:icon="@drawable/ic_edit_black_24dp"
         android:title="@string/toolbar_edit"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/clearBtn"

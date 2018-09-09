@@ -14,12 +14,14 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -52,7 +54,6 @@ public class CreateActivity extends AppCompatActivity {
 
     private DiaEntry diaEntry, dbDiaEntry;
     private EditText title, description, city;
-    private FloatingActionButton createBtn;
     private ImageButton selectImage, findLocation, selectMood;
     private ImageView imageView;
     private int selectedMood = 4;
@@ -63,8 +64,8 @@ public class CreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create);
 
         init();
-
         initBtn();
+        setUpAppBar();
         // wenn der Eintrag bearbeitet werden soll
         if (getIntent().getSerializableExtra(TODO_KEY) != null) {
             initWithEntry();
@@ -136,19 +137,18 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void init() {
-        title = findViewById(R.id.createDiaEntryTitleEditText);
-        description = findViewById(R.id.createDiaEntryDescEditText);
-        imageView = findViewById(R.id.imageView);
+        title = findViewById(R.id.create_editText_title);
+        description = findViewById(R.id.create_editText_entryDesc);
+        imageView = findViewById(R.id.create_imageView_mainImage);
         city = findViewById(R.id.location_input);
     }
 
     // Sobald der Eintrag erstellen Button aufgerufen wird
     private void initBtn() {
         // Buttons instanziieren
-        selectImage = findViewById(R.id.selectImageBtn);
+        selectImage = findViewById(R.id.create_imageButton_selectImage);
         selectMood = findViewById(R.id.imageButton_moodSelect);
         findLocation = findViewById(R.id.location_find_btn);
-        createBtn = findViewById(R.id.createBtn);
 
 
         // ToDo: App stürzt ab wenn man kein Bild auswählt
@@ -158,8 +158,8 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(5,2)
-                        .setRequestedSize(imageView.getWidth(),imageView.getHeight(), CropImageView.RequestSizeOptions.RESIZE_EXACT)
+                        .setAspectRatio(5, 2)
+                        .setRequestedSize(imageView.getWidth(), imageView.getHeight(), CropImageView.RequestSizeOptions.RESIZE_EXACT)
                         .start(CreateActivity.this);
             }
         });
@@ -178,46 +178,48 @@ public class CreateActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(CreateActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
             }
         });
-
-        createBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // verhindert, dass man durch schnelle drücken des Buttons mehrere Einträge erstellt.
-                createBtn.setClickable(false);
-                // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt. Wenn du noch weitere Konstruktoren brauchst, gib Bescheid
-                final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
-
-                newDiaEntry.setDate(Calendar.getInstance());
-                newDiaEntry.setMood(selectedMood);
-                // fügt das bild zum DiaEntry als byte[] hinzu.
-                if (imageView.getDrawable() != null) {
-                    try {
-                        byte[] image = imageViewToByte(imageView);
-                        newDiaEntry.setImage(image);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+    }
 
 
-                if (city.getText().toString() != null) {
-                    newDiaEntry.setCity(city.getText().toString());
-                }
+    // Create Entry Method for Toolbar
+    public void createEntry(){
+        // ToDo: wird das noch benötigit? Wenn ja wie für toolbar items umsetzten?
+        // verhindert, dass man durch schnelle drücken des Buttons mehrere Einträge erstellt.
+        //R.id.create_menu_done.setClickable(false);
 
+        // neuen DiaEntry erstellen, den brauchen wir, da die createEntry Funktion ein DiaEntry Object verlangt.
+        final DiaEntry newDiaEntry = new DiaEntry(title.getText().toString(), description.getText().toString());
 
-                // Verbindung zur DB aufbauen
-                DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
-
-                // diaEntry hinzufügen zur db
-                db.createEntry(newDiaEntry);
-
-                // verbindung zur DB schließen WICHTIG muss immer gemacht werden, wenn wir die db verwenden, da es sonst zu komplikationen kommt
-                db.close();
-
-                // Activity schließen, eventueller Toast für erfolgreiche speicherung
-                finish();
+        newDiaEntry.setDate(Calendar.getInstance());
+        newDiaEntry.setMood(selectedMood);
+        // fügt das bild zum DiaEntry als byte[] hinzu.
+        if (imageView.getDrawable() != null) {
+            try {
+                byte[] image = imageViewToByte(imageView);
+                newDiaEntry.setImage(image);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
+
+
+        if (city.getText().toString() != null) {
+            newDiaEntry.setCity(city.getText().toString());
+        }
+
+
+        // Verbindung zur DB aufbauen
+        DiaEntryDatabase db = DiaEntryDatabase.getInstance(CreateActivity.this);
+
+        // diaEntry hinzufügen zur db
+        db.createEntry(newDiaEntry);
+
+        // verbindung zur DB schließen WICHTIG muss immer gemacht werden, wenn wir die db verwenden, da es sonst zu komplikationen kommt
+        db.close();
+
+        // Activity schließen,  Toast für erfolgreiche speicherung
+        Toast.makeText(this, R.string.create_entrySaved, Toast.LENGTH_SHORT);
+        finish();
     }
 
 
@@ -368,14 +370,49 @@ public class CreateActivity extends AppCompatActivity {
         return city;
     }
 
+    // Setzt die AppBar auf mitsamt Toolbar.
+    public void setUpAppBar (){
+        // setzt die Toolbar auf
+        Toolbar createToolbar = findViewById(R.id.create_toolbar);
+        setSupportActionBar(createToolbar);
+
+        ActionBar createActionBar = getSupportActionBar();
+
+        if(createActionBar != null){
+            createActionBar.setDisplayHomeAsUpEnabled(true);
+           createActionBar.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+        }
+    }
+
+
+
+    // Inflates toolbar menu.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.create_menu, menu);
+
+        return true;
+    }
+
     // Handles toolbar selection.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            // Creates Entry and saves it to db
-            case R.id.createBtn:
+            // Save Entry into Database
+            case R.id.create_menu_done:
 
+                createEntry();
+
+                return true;
+
+            // Switch to SettingsActivity
+            case R.id.create_menu_settings:
+
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+
+                return true;
 
             default:
 

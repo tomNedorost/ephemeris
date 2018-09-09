@@ -19,7 +19,7 @@ public class MoodArrayAdapter extends ArrayAdapter<String> {
 
 
     private List<Integer> moodDrawables;
-    private int selectedMood = 5;
+
 
     public MoodArrayAdapter(Context context, List<String> moodNames, List<Integer> moodDrawables) {
         super(context, android.R.layout.select_dialog_item, moodNames);

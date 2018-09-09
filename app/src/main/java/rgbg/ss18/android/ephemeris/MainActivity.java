@@ -1,22 +1,9 @@
 package rgbg.ss18.android.ephemeris;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,12 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
 
-import rgbg.ss18.android.ephemeris.adapter.DiaEntryOverviewListAdapter;
+import rgbg.ss18.android.ephemeris.adapter.EntryOverviewListAdapter;
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
@@ -39,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton createBtn;
     private ListView diaListView;
     private List<DiaEntry> dataSource;
-    private DiaEntryOverviewListAdapter adapter;
+    private EntryOverviewListAdapter adapter;
 
 
     @Override
@@ -59,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAppBar(){
         Toolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
     }
 
     // Inflates toolbar menu.
@@ -154,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     private void initListView() {
         this.diaListView = findViewById(R.id.diaListView);
         this.dataSource = DiaEntryDatabase.getInstance(this).getAllDiaEntries();
-        this.adapter = new DiaEntryOverviewListAdapter(this, dataSource);
+        this.adapter = new EntryOverviewListAdapter(this, dataSource);
         diaListView.setAdapter(adapter);
 
         // ToDo: zur edit activity weiterleiten, dies funtkioniert ähnlich wie die createEntry Methode, nur mit der updateEntry Methode

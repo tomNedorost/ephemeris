@@ -9,14 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.List;
 
-import rgbg.ss18.android.ephemeris.adapter.DiaEntryOverviewListAdapter;
+import rgbg.ss18.android.ephemeris.adapter.EntryOverviewListAdapter;
 import rgbg.ss18.android.ephemeris.database.DiaEntryDatabase;
 import rgbg.ss18.android.ephemeris.model.DiaEntry;
 
@@ -26,7 +25,7 @@ public class SearchActivity extends AppCompatActivity {
     private ImageButton searchButton;
     private List<DiaEntry> diaEntries;
     private ListView searchListView;
-    private DiaEntryOverviewListAdapter adapter;
+    private EntryOverviewListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     private void initListView() {
         searchListView = findViewById(R.id.search_list_view);
         diaEntries = DiaEntryDatabase.getInstance(this).getAllDiaEntries();
-        adapter = new DiaEntryOverviewListAdapter(this, diaEntries);
+        adapter = new EntryOverviewListAdapter(this, diaEntries);
         searchListView.setAdapter(adapter);
 
         // ToDo: zur edit activity weiterleiten, dies funtkioniert ähnlich wie die createEntry Methode, nur mit der updateEntry Methode
@@ -121,14 +120,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            // Switch to SearchActivity
-            case R.id.map:
-
-                Intent mapIntent = new Intent(this, MapActivity.class);
-                startActivity(mapIntent);
-
-                return true;
 
             // Switch to SettingsActivity
             case R.id.settings:
